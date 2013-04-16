@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+<title>CahierTests</title>
+<style type="text/css">
+
+body,
+h1,h2,h3,h4,
+hr {
+	margin: 0px;
+	padding: 0px;
+}
+
+body {
+	font-family: sans-serif;
+}
+
+h2 {
+	margin-bottom: 10px;
+} 
+h3 {
+	margin-top: 5px;
+	margin-bottom: 5px;
+} 
+/*
+.right {
+	text-align: right;
+}
+*/
+.indente {
+	margin-left: 1em;
+}
+
+.testcase {
+<!--	border-bottom: 1px solid black;-->
+}
+</style>
+</head>
+<body>
+
+<div id="index" class="indente">
+	<h1><a name="index">Sommaire</a></h1>
+	
+	<ul>
+	<li><a href="#AcquerirAssociationsCodeLibelle">AcquerirAssociationsCodeLibelle</a></li>
+	<li><a href="#Service 2">Service 2</a></li>
+	</ul>
+</div>
+
+<h1>Cas de tests</h1>
+<div id="testcases" class="indente">
+	<p>Ce chapitre présente les cas de tests de %%APPLI%%</p>
+	
+	<h2><a name="AcquerirAssociationsCodeLibelle">AcquerirAssociationsCodeLibelle</a></h2>
+	<div class="indente">
+		<p>Cette section présente les cas de tests de AcquerirAssociationsCodeLibelle.</p>
+		
+		<h3>TA_DTS_14050 - Acquisition des associations code/libellé</h3>
+		<div class="indente testcase">
+			
+			<h4>Exigences fonctionnelles couvertes</h4>
+			<div class="indente test-requirement">
+			<ul>
+				<li>RQ 00700</li>
+				<li>RQ 00701</li>
+			</ul>
+			</div>
+			
+			<h4>Prerequis</h4>
+			<div class="indente test-prerequisite">
+			Le service est déployé
+			</div>
+			
+			<h4>Données en entrée</h4>
+			<div class="indente test-input">
+			Pas de paramètre en entrée
+			</div>
+			
+			<h4>Résultat attendu</h4>
+			<div class="indente test-result">
+			Toutes les associations code/libellé sont présentes dans la Vue Service out
+			</div>
+			
+			<p class="right"><a href="#index">Retour au sommaire</a></p>
+		</div>
+
+		<h3>TA_DTS_14051 - 2e cas de tests</h3>
+		<div class="indente testcase">
+			
+			<h4>Exigences fonctionnelles couvertes</h4>
+			<div class="indente test-requirement">
+			<ul>
+				<li>RQ 00702</li>
+				<li>RQ 00703</li>
+			</ul>
+			</div>
+			
+			<h4>Prerequis</h4>
+			<div class="indente test-prerequisite">
+			
+			Le service est déployé
+			</div>
+			
+			
+			<h4>Données en entrée</h4>
+			<div class="indente test-input">
+			Pas de paramètre en entrée
+			</div>
+			
+			
+			<h4>Résultat attendu</h4>
+			<div class="indente test-result">
+			Toutes les associations code/libellé sont présentes dans la Vue Service out
+			</div>
+		</div>
+		<p class="right"><a href="#index">Retour au sommaire</a></p>
+	</div>
+
+	<h2><a name="Service 2">Service 2</a></h2>
+	<div class="indente">
+		
+		<h3>TA_DTS_14061 - Service 2</h3>
+		<div class="indente testcase">
+			
+			<h4>Exigences fonctionnelles couvertes</h4>
+			<div class="indente test-requirement">
+			<ul>
+				<li>RQ 00800</li>
+				<li>RQ 00801</li>
+			</ul>
+			</div>
+			
+			<h4>Prerequis</h4>
+			<div class="indente test-prerequisite">
+			Le service est déployé
+			</div>
+			
+			<h4>Données en entrée</h4>
+			<div class="indente test-input">
+			<pre>
+&lt;REQUETE&gt;
+	&lt;PARAM&gt;param1&lt;/PARAM&gt;
+	&lt;VALUE&gt;value1&lt;/VALUE&gt;
+&lt;/REQUETE&gt;
+			</pre>
+			</div>
+			
+			<h4>Résultat attendu</h4>
+			<div class="indente test-result">
+			<ul>
+				<li>Pas d'erreur'</li>
+				<li>LDAP mis à jour</li>
+			</ul>
+			</div>
+		</div>
+		
+		<p class="right"><a href="#index">Retour au sommaire</a></p>
+	</div>
+</div>
+</body>
+</html>
