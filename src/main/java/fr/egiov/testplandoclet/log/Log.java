@@ -8,44 +8,54 @@ import org.apache.log4j.PropertyConfigurator;
 /**
  * Defines methods to handle log in the doclet.
  */
-public class Log
-{
+public class Log {
+	// ------------------------- private constants -------------------------
 
-   /**
-    * Initializes the log4j facility.
-    */
-   public static void initLog4j(boolean debug)
-   {
-      // clean away the old logfile
-      File logFile = new File("./testplan-doclet.log");
-      logFile.delete();
+	/** The name of the log file. */
+	private static final String LOG_FILENAME = "./testplan-doclet.log";
 
-      Properties props = new Properties();
+	// ------------------------- public methods-------------------------
 
-      // appender for console
-      props.setProperty("log4j.appender.stout", "org.apache.log4j.ConsoleAppender");
-      props.setProperty("log4j.appender.stout.layout", "org.apache.log4j.PatternLayout");
-      props.setProperty("log4j.appender.stout.layout.ConversionPattern", "%5p %C{1}:%M() - %m%n");
+	/**
+	 * Initializes the log4j facility.
+	 * 
+	 * @param p_isDebug
+	 *            The debug flag indicating if the log must be configured with
+	 *            the DEBUG level.
+	 */
+	public static void initLog4j(boolean p_isDebug) {
+		// clean away the old logfile
+		File logFile = new File(LOG_FILENAME);
+		logFile.delete();
 
-      // appender for logfile
-      props.setProperty("log4j.appender.logfile", "org.apache.log4j.DailyRollingFileAppender");
-      props.setProperty("log4j.appender.logfile.File", "./doclet.log");
-      props.setProperty("log4j.appender.logfile.DatePattern", "yyyy-MM-dd");
-      props.setProperty("log4j.appender.logfile.layout", "org.apache.log4j.PatternLayout");
-      props.setProperty("log4j.appender.logfile.layout.ConversionPattern",
-         "%d{yyyy-MM-dd HH:mm:ss.SSS} %5p %C{1}:%M() - %m%n");
+		Properties props = new Properties();
 
-      if (debug)
-      {
-         props.setProperty("log4j.rootLogger", "DEBUG, logfile, stout");
-         // props.setProperty("log4j.appender.stout.Threshold", "INFO");
-      }
-      else
-      {
-         props.setProperty("log4j.rootLogger", "FATAL, stout");
-         props.setProperty("log4j.appender.stout.Threshold", "FATAL");
-      }
+		// appender for console
+		props.setProperty("log4j.appender.stout",
+				"org.apache.log4j.ConsoleAppender");
+		props.setProperty("log4j.appender.stout.layout",
+				"org.apache.log4j.PatternLayout");
+		props.setProperty("log4j.appender.stout.layout.ConversionPattern",
+				"%5p %C{1}:%M() - %m%n");
 
-      PropertyConfigurator.configure(props);
-   }
+		// appender for logfile
+		props.setProperty("log4j.appender.logfile",
+				"org.apache.log4j.DailyRollingFileAppender");
+		props.setProperty("log4j.appender.logfile.File", LOG_FILENAME);
+		props.setProperty("log4j.appender.logfile.DatePattern", "yyyy-MM-dd");
+		props.setProperty("log4j.appender.logfile.layout",
+				"org.apache.log4j.PatternLayout");
+		props.setProperty("log4j.appender.logfile.layout.ConversionPattern",
+				"%d{yyyy-MM-dd HH:mm:ss.SSS} %5p %C{1}:%M() - %m%n");
+
+		if (p_isDebug) {
+			props.setProperty("log4j.rootLogger", "DEBUG, logfile, stout");
+			props.setProperty("log4j.appender.stout.Threshold", "INFO");
+		} else {
+			props.setProperty("log4j.rootLogger", "FATAL, stout");
+			props.setProperty("log4j.appender.stout.Threshold", "FATAL");
+		}
+
+		PropertyConfigurator.configure(props);
+	}
 }
