@@ -50,13 +50,13 @@ public class Configuration {
 
 		boolean log4jInitialized = false;
 		if (true == s_debugEnabled) {
-			Util.initLog4j(true);
+			Log.initLog4j(true);
 			log4jInitialized = true;
 		}
 
 		if (!log4jInitialized) {
 			// by default, log on info level in console (file is always debug)
-			Util.initLog4j(false);
+			Log.initLog4j(false);
 		}
 	}
 

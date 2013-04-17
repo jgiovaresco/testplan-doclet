@@ -7,7 +7,7 @@ import org.apache.log4j.PropertyConfigurator;
 
 /**
  */
-public class Util
+public class Log
 {
 
    /**
