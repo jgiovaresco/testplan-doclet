@@ -11,6 +11,7 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.log.Log4JLogChute;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
+import fr.egiov.testplandoclet.Configuration;
 import fr.egiov.testplandoclet.plan.TestPlan;
 
 public class TestPlanHtmlGeneratorImpl implements TestPlanHtmlGenerator
@@ -67,7 +68,7 @@ public class TestPlanHtmlGeneratorImpl implements TestPlanHtmlGenerator
 
       try
       {
-         writer = new FileWriter(String.format("target/%s_testplan.html", p_applicationName));
+         writer = new FileWriter(Configuration.getFileName());
          t.merge( context, writer );
          writer.flush();
       }
