@@ -11,9 +11,9 @@ import org.apache.log4j.PropertyConfigurator;
 public class Log {
 	// ------------------------- private constants -------------------------
 
-	/** The name of the log file. */
-	private static final String LOG_FILENAME = "./testplan-doclet.log";
-
+	/** The name of the log file for the doclet. */
+	private static final String DOCLET_LOG_FILENAME = "./testplan-doclet.log";
+	
 	// ------------------------- public methods-------------------------
 
 	/**
@@ -25,8 +25,11 @@ public class Log {
 	 */
 	public static void initLog4j(boolean p_isDebug) {
 		// clean away the old logfile
-		File logFile = new File(LOG_FILENAME);
+		File logFile = null;
+		
+		logFile = new File(DOCLET_LOG_FILENAME);
 		logFile.delete();
+		
 
 		Properties props = new Properties();
 
@@ -41,7 +44,7 @@ public class Log {
 		// appender for logfile
 		props.setProperty("log4j.appender.logfile",
 				"org.apache.log4j.DailyRollingFileAppender");
-		props.setProperty("log4j.appender.logfile.File", LOG_FILENAME);
+		props.setProperty("log4j.appender.logfile.File", DOCLET_LOG_FILENAME);
 		props.setProperty("log4j.appender.logfile.DatePattern", "yyyy-MM-dd");
 		props.setProperty("log4j.appender.logfile.layout",
 				"org.apache.log4j.PatternLayout");

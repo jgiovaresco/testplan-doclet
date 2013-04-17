@@ -23,9 +23,6 @@ public class TestPlanHtmlGeneratorImpl implements TestPlanHtmlGenerator
 
    // ------------------------- private members -------------------------
 
-   /** The Velocity engine. */
-   private VelocityEngine m_velocityEngine;
-
    // ------------------------- constructors -------------------------
 
    /**
@@ -35,15 +32,15 @@ public class TestPlanHtmlGeneratorImpl implements TestPlanHtmlGenerator
     */
    public TestPlanHtmlGeneratorImpl()
    {
-      m_velocityEngine = new VelocityEngine();
-      m_velocityEngine.setProperty(Velocity.RESOURCE_LOADER, "classpath");
-      m_velocityEngine
+      Velocity.setProperty(Velocity.RESOURCE_LOADER, "classpath");
+      Velocity
          .setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
       // ve.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, "./templates/");
-      m_velocityEngine.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,
+      Velocity.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,
          Log4JLogChute.class.getName());
+      Velocity.setProperty(Log4JLogChute.RUNTIME_LOG_LOG4J_LOGGER, "velocity");
 
-      m_velocityEngine.init();
+      Velocity.init();
    }
 
    // ------------------------- public methods-------------------------
@@ -60,7 +57,7 @@ public class TestPlanHtmlGeneratorImpl implements TestPlanHtmlGenerator
       VelocityContext context = null;
       FileWriter writer = null;
       
-      t = m_velocityEngine.getTemplate(TEMPLATES_DIR + "html_testplan.vm", "UTF-8");
+      t = Velocity.getTemplate(TEMPLATES_DIR + "html_testplan.vm", "UTF-8");
       
       context = new VelocityContext();
       context.put("applicatioName", p_applicationName);
