@@ -1,4 +1,4 @@
-package fr.egiov.testreport;
+package fr.egiov.testplandoclet;
 
 import org.junit.Test;
 
