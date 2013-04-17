@@ -1,4 +1,4 @@
-package fr.egiov.testplandoclet;
+package fr.egiov.testplandoclet.log;
 
 import java.io.File;
 import java.util.Properties;
@@ -6,6 +6,7 @@ import java.util.Properties;
 import org.apache.log4j.PropertyConfigurator;
 
 /**
+ * Defines methods to handle log in the doclet.
  */
 public class Log
 {
@@ -47,5 +48,4 @@ public class Log
 
       PropertyConfigurator.configure(props);
    }
-
 }

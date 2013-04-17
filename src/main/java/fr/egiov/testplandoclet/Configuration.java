@@ -3,6 +3,8 @@ package fr.egiov.testplandoclet;
 import com.sun.javadoc.DocErrorReporter;
 import com.sun.javadoc.RootDoc;
 
+import fr.egiov.testplandoclet.log.Log;
+
 /**
  * Handles the TestPlanDoclets configuration properties.
  * 
