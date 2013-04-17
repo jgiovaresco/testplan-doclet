@@ -7,6 +7,8 @@ import org.apache.log4j.PropertyConfigurator;
 
 /**
  * Defines methods to handle log in the doclet.
+ * 
+ * @author Julien Giovaresco
  */
 public class Log {
 	// ------------------------- private constants -------------------------

@@ -50,16 +50,7 @@ public class Configuration {
 	public static void start(RootDoc p_root) throws Exception {
 		processOptions(p_root.options());
 
-		boolean log4jInitialized = false;
-		if (true == s_debugEnabled) {
-			Log.initLog4j(true);
-			log4jInitialized = true;
-		}
-
-		if (!log4jInitialized) {
-			// by default, log on info level in console (file is always debug)
-			Log.initLog4j(false);
-		}
+		Log.initLog4j(s_debugEnabled);
 	}
 
 	/**

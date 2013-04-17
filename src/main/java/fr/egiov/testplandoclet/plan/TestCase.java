@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * Defines a test case.
+ * 
+ * @author Julien Giovaresco
  */
 public class TestCase
 {

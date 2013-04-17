@@ -50,7 +50,7 @@ public class HtmlTestPlanDoclet extends Doclet {
 	// ------------------------- static methods -------------------------
 
 	/**
-	 * Main doclet method.
+	 * Doclet main method.
 	 * 
 	 * @param p_root
 	 *            The root of the javadoc information.

@@ -14,6 +14,8 @@ import fr.egiov.testplandoclet.HtmlTestPlanDoclet;
 
 /**
  * Defines the test plan.
+ * 
+ * @author Julien Giovaresco
  */
 public class TestPlan
 {

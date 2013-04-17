@@ -4,6 +4,8 @@ import fr.egiov.testplandoclet.plan.TestPlan;
 
 /**
  * Defines the interface for the generator of test plan in HTML.
+ * 
+ * @author Julien Giovaresco
  */
 public interface TestPlanHtmlGenerator
 {
