@@ -1,8 +1,3 @@
-// -----------------------------------------------------------------------------
-// Projet : SAMOA
-// Client : P�le Emploi
-// Auteur : giovarej / Bull S.A.S.
-// -----------------------------------------------------------------------------
 package fr.egiov.testreport.sample;
 
 import org.junit.After;
