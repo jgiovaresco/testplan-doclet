@@ -57,36 +57,55 @@ Description of tags
 	<tr>
 		<th>Tag</th>
 		<th>Cardinality</th>
+		<th>Location</th>
 		<th>Description</th>
 	</tr>
 	<tr>
 		<td>@service</td>
 		<td>1</td>
-		<td>used in the javadoc of a test class to define the service tested by this class.</td>
+		<td>in the javadoc of a test class</td>
+		<td>used to define the service tested by this class.</td>
+	</tr>
+	<tr>
+		<td>@service</td>
+		<td>1</td>
+		<td>in the javadoc of a constant in a class defining requirements </td>
+		<td>used to define the service covered by the requirement.</td>
 	</tr>
 	<tr>
 		<td>@title</td>
 		<td>1</td>
-		<td>used in the javadoc of a test method (annoted with @Test) to define the title of the test case.</td>
+		<td>in the javadoc of a test method (annoted with @Test)</td>
+		<td>used to define the title of the test case.</td>
 	</tr>
 	<tr>
 		<td>@requirement</td>
 		<td>*</td>
-		<td>used in the javadoc of a test method (annoted with @Test) to define the list of requirement covered by the test case.</td>
+		<td>in the javadoc of a test method (annoted with @Test)</td>
+		<td>used to define the list of requirement covered by the test case.</td>
+	</tr>
+	<tr>
+		<td>@requirement</td>
+		<td>*</td>
+		<td>in the javadoc of a constant in a class defining requirements</td>
+		<td>used to define a requirement.</td>
 	</tr>
 	<tr>
 		<td>@prerequisite</td>
 		<td>1</td>
-		<td>used in the javadoc of a test method (annoted with @Test) to define the prerequisite of the test case.</td>
+		<td>in the javadoc of a test method (annoted with @Test)</td>
+		<td>used to define the prerequisite of the test case.</td>
 	</tr>
 	<tr>
 		<td>@input</td>
 		<td>1</td>
-		<td>used in the javadoc of a test method (annoted with @Test) to define the input data of the test case.</td>
+		<td>in the javadoc of a test method (annoted with @Test)</td>
+		<td>used to define the input data of the test case.</td>
 	</tr>
 	<tr>
 		<td>@result</td>
 		<td>1</td>
-		<td>used in the javadoc of a test method (annoted with @Test) to define the expected result of the test case.</td>
+		<td>in the javadoc of a test method (annoted with @Test)</td>
+		<td>used to define the expected result of the test case.</td>
 	</tr>
 </table>
