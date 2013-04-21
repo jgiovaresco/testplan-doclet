@@ -21,6 +21,7 @@ package fr.egiov.testplandoclet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +34,8 @@ import com.sun.javadoc.LanguageVersion;
 import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.RootDoc;
 import com.sun.javadoc.Tag;
+import com.sun.tools.doclets.internal.toolkit.taglets.TagletManager;
+import com.sun.tools.doclets.internal.toolkit.util.MessageRetriever;
 
 import fr.egiov.testplandoclet.html.TestPlanHtmlGenerator;
 import fr.egiov.testplandoclet.html.TestPlanHtmlGeneratorImpl;
@@ -293,7 +296,21 @@ public class HtmlTestPlanDoclet extends Doclet {
 		// @input
 		for (Tag tag : p_method.tags(TagName.TAG_INPUT)) {
 			LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
-			testcase.setInput(tag.text());
+			
+			String value = "";
+			
+			for (Tag inlineTag : tag.inlineTags()) {
+				LOGGER.debug("Processing inlinetag {} : {}", inlineTag.name(),
+						inlineTag.text());
+				if ("@code".equals(inlineTag.name())) {
+					value += "<pre>" + StringEscapeUtils.escapeHtml(inlineTag.text()) + "</pre>";
+				}
+				else {
+					value += inlineTag.text();
+				}
+			}
+
+			testcase.setInput(value);
 		}
 
 		// @result
@@ -305,7 +322,7 @@ public class HtmlTestPlanDoclet extends Doclet {
 		return testcase;
 	}
 
-	// ------------------------- public methods -------------------------
+	// ------------------------- private methods -------------------------
 
 	/**
 	 * Returns true if the method is annotated with @Test
