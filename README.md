@@ -86,7 +86,7 @@ Description of tags
 	</tr>
 	<tr>
 		<td>@requirement</td>
-		<td>*</td>
+		<td>1</td>
 		<td>in the javadoc of a constant in a class defining requirements</td>
 		<td>used to define a requirement.</td>
 	</tr>
