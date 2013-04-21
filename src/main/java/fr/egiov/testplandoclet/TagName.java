@@ -26,13 +26,32 @@ package fr.egiov.testplandoclet;
 public final class TagName {
 	// ------------------------- public constants -------------------------
 
-	/** Tag defining the service tested by the test case. */
+	/**
+	 * Tag defining
+	 * <ul>
+	 * <li>the service tested by the test case if this tag is in the javadoc of
+	 * a test class.</li>
+	 * <li>the service to which the requirement is attached if this tag is in
+	 * the javadoc of a constant in a class defining requirement.</li>
+	 * </ul>
+	 */
 	public static final String TAG_SERVICE = "service";
+
+	/** Tag defining that the class contains the definition of the requirements. */
+	public static final String TAG_REQUIREMENTS = "requirements";
 
 	/** Tag defining the title of the test case. */
 	public static final String TAG_TITLE = "title";
 
-	/** Tag defining the requirement covered by the test case. */
+	/**
+	 * Tag defining
+	 * <ul>
+	 * <li>the requirement covered by the test case if this tag is in the
+	 * javadoc of an annoted Test method.</li>
+	 * <li>a requirement if this tag is in javadoc on a constant in a class
+	 * defining requirements.</li>
+	 * </ul>
+	 */
 	public static final String TAG_REQUIREMENT = "requirement";
 
 	/** Tag defining the prerequisite of the test case. */

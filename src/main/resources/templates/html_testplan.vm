@@ -39,12 +39,47 @@ h3 {
 </head>
 <body>
 
+<h1><a name="index">Sommaire</a></h1>
 <div id="index" class="indente">
-	<h1><a name="index">Sommaire</a></h1>
+	<ul>
+		<li><a href="#requirements">Couvertures des exigences fonctionnelles
+		<ul>		
+			#foreach($service in $testplan.testedServices)
+				<li><a href="#requirements_$service">$service</a></li>
+			#end
+			</ul>
+		</li>
+		<li><a href="#testcases">Cas de tests</a>
+			<ul>		
+			#foreach($service in $testplan.testedServices)
+				<li><a href="#testcases_$service">$service</a></li>
+			#end
+			</ul>
+		</li>
+	</ul>
+</div>
+
+<h1>Couvertures des exigences fonctionnelles</h1>
+<div id="requirements" class="indente">
+	<p>Ce chapitre présente la couverture des exigences fonctionnelles de $applicatioName</p>
 	
 	<ul>
 	#foreach($service in $testplan.testedServices)
-		<li><a href="#$service">$service</a></li>
+		<li>
+			<a name="requirements_$service">$service</a>
+			<ul>
+				#foreach($requirement in $testplan.getRequirements("$service"))
+					<li>
+						<a name="$requirement.code">$requirement.code : $requirement.description</a>
+						<ul>
+						#foreach($case in $testplan.getTestCases($requirement))
+							<li>$case.name</li>
+						#end
+						</ul>
+					</li>	
+				#end
+			</ul>
+		</li>	
 	#end
 	</ul>
 </div>
@@ -54,7 +89,7 @@ h3 {
 	<p>Ce chapitre présente les cas de tests de $applicatioName</p>
 	
 #foreach($service in $testplan.testedServices)
-	<h2><a name="$service">$service</a></h2>
+	<h2><a name="testcases_$service">$service</a></h2>
 	<div class="indente">
 		<p>Cette section présente les cas de tests de $service.</p>
 		
@@ -66,7 +101,7 @@ h3 {
 			<div class="indente test-requirement">
 			<ul>
 			#foreach($requirement in $case.requirements)
-				<li>$requirement</li>
+				<li><a href="#$requirement">$requirement : $testplan.getRequirement("$requirement").description</a></li>
 			#end
 			</ul>
 			</div>

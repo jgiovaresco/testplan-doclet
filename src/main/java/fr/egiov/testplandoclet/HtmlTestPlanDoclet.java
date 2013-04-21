@@ -18,6 +18,9 @@
  */
 package fr.egiov.testplandoclet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +28,7 @@ import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.DocErrorReporter;
 import com.sun.javadoc.Doclet;
+import com.sun.javadoc.FieldDoc;
 import com.sun.javadoc.LanguageVersion;
 import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.RootDoc;
@@ -32,6 +36,7 @@ import com.sun.javadoc.Tag;
 
 import fr.egiov.testplandoclet.html.TestPlanHtmlGenerator;
 import fr.egiov.testplandoclet.html.TestPlanHtmlGeneratorImpl;
+import fr.egiov.testplandoclet.plan.Requirement;
 import fr.egiov.testplandoclet.plan.TestCase;
 import fr.egiov.testplandoclet.plan.TestPlan;
 
@@ -158,31 +163,87 @@ public class HtmlTestPlanDoclet extends Doclet {
 	 */
 	public void processClass(ClassDoc p_clazz) {
 		MethodDoc[] methods = null;
+		FieldDoc[] fields = null;
 
 		String serviceTested = null;
+		List<Requirement> requirements = null;
 		TestCase testcase = null;
+		boolean isTestClass = false;
+		boolean isRequirementsClass = false;
 
 		LOGGER.debug("Processing class {}", p_clazz);
 
-		if (p_clazz.name().endsWith("IT")) {
-			for (Tag tag : p_clazz.tags(TagName.TAG_SERVICE)) {
-				LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
-				serviceTested = tag.text();
-			}
+		for (Tag tag : p_clazz.tags(TagName.TAG_SERVICE)) {
+			LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
+			serviceTested = tag.text();
+			isTestClass = true;
 		}
 
-		// iterate over all methods and print their names.
-		methods = p_clazz.methods();
-		if (null != methods) {
-			for (MethodDoc method : methods) {
-				if (true == isTestMethod(method)) {
-					testcase = processMethod(method);
-					testcase.setTestedService(serviceTested);
+		for (Tag tag : p_clazz.tags(TagName.TAG_REQUIREMENTS)) {
+			LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
+			isRequirementsClass = true;
+		}
 
-					m_testPlan.add(testcase);
+		if (isRequirementsClass) {
+			fields = p_clazz.fields();
+			requirements = processFieldsOfClassDefiningRequirements(fields);
+
+			m_testPlan.add(requirements);
+		}
+
+		if (isTestClass) {
+			methods = p_clazz.methods();
+			if (null != methods) {
+				for (MethodDoc method : methods) {
+					if (true == isTestMethod(method)) {
+						testcase = processMethod(method);
+						testcase.setTestedService(serviceTested);
+
+						m_testPlan.add(testcase);
+					}
 				}
 			}
 		}
+	}
+
+	/**
+	 * Process fields of a class defining requirements.
+	 * 
+	 * @param p_fields
+	 *            The fields to process.
+	 * @return The requirements list defined in the fields list.
+	 */
+	public List<Requirement> processFieldsOfClassDefiningRequirements(
+			FieldDoc[] p_fields) {
+		List<Requirement> requirements = new ArrayList<Requirement>();
+		Requirement requirement = null;
+		String service = null;
+		String code = null;
+		String description = null;
+
+		if (null != p_fields) {
+			for (FieldDoc field : p_fields) {
+				LOGGER.debug("Processing field {}", field);
+
+				for (Tag tag : field.tags(TagName.TAG_SERVICE)) {
+					LOGGER.debug("Processing tag field {} : {}", tag.name(),
+							tag.text());
+					service = tag.text();
+				}
+				
+				for (Tag tag : field.tags(TagName.TAG_REQUIREMENT)) {
+					LOGGER.debug("Processing tag field {} : {}", tag.name(),
+							tag.text());
+					code = field.name();
+					description = (String) field.constantValue();
+				}
+				
+				requirement = new Requirement(service, code, description);
+				requirements.add(requirement);
+			}
+		}
+
+		return requirements;
 	}
 
 	/**
@@ -211,7 +272,16 @@ public class HtmlTestPlanDoclet extends Doclet {
 		// @requirement
 		for (Tag tag : p_method.tags(TagName.TAG_REQUIREMENT)) {
 			LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
-			testcase.getRequirements().add(tag.text());
+
+			for (Tag inlineTag : tag.inlineTags()) {
+				LOGGER.debug("Processing inlinetag {} : {}", inlineTag.name(),
+						inlineTag.text());
+				if ("@link".equals(inlineTag.name())) {
+
+					testcase.getRequirements().add(
+							extractFieldNameFromLinkTag(inlineTag.text()));
+				}
+			}
 		}
 
 		// @prerequisite
@@ -235,6 +305,8 @@ public class HtmlTestPlanDoclet extends Doclet {
 		return testcase;
 	}
 
+	// ------------------------- public methods -------------------------
+
 	/**
 	 * Returns true if the method is annotated with @Test
 	 * 
@@ -256,5 +328,22 @@ public class HtmlTestPlanDoclet extends Doclet {
 		}
 
 		return testMethod;
+	}
+
+	/**
+	 * Extract from the Link tag text the name of a field.
+	 * 
+	 * @param p_Text
+	 *            The text of a link tag.
+	 * @return The name of the field.
+	 */
+	private String extractFieldNameFromLinkTag(String p_Text) {
+		String name = null;
+		int index = 0;
+
+		index = p_Text.indexOf('#');
+		name = p_Text.substring(index + 1, p_Text.length());
+
+		return name;
 	}
 }

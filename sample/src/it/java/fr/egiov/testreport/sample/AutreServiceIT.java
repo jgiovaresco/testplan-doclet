@@ -5,10 +5,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests AcquerirAssociationsCodeLibelleIT
- * @service AcquerirAssociationsCodeLibelle
+ * Tests AutreServiceIT
+ * @service AutreService
  */
-public class AcquerirAssociationsCodeLibelleIT
+public class AutreServiceIT
 {
    // ------------------------- Constantes private -------------------------
 
@@ -35,24 +35,29 @@ public class AcquerirAssociationsCodeLibelleIT
    // ------------------------- Methodes de tests -------------------------
 
    /**
-    * @title Acquisition des associations code/libellé cas 1
+    * @title cas 1 pour autre service.
     * 
-    * @requirement {@link ExigencesFonctionnelles#RQ_00700} 
-    * @requirement {@link ExigencesFonctionnelles#RQ_00701} 
+    * @requirement {@link ExigencesFonctionnelles#RQ_00800} 
     * 
-    * @prerequisite Le service est déployé.
+    * @prerequisite Le service est déployé
     *   
-    * @input Pas de paramètre en entrée
+    * @input <REQUETE>
+    * <ID>monId</ID
+    * <TYPE>monType</TYPE>
+    * <VALUE>value/VALUE>
+    * </REQUETE>
     * 
-    * @result Toutes les associations code/libellé sont présentes dans la Vue Service out
+    * @result La réponse est OK.
     */
    @Test
-   public void TA_DTS_14050() throws Exception
+   public void TA_DTS_15050() throws Exception
    {
    }
    
    /**
     * @title Acquisition des associations code/libellé cas 2
+    * 
+    * @requirement {@link ExigencesFonctionnelles#RQ_00801} 
     * 
     * @prerequisite Le service est déployé.
     *   
@@ -67,7 +72,7 @@ public class AcquerirAssociationsCodeLibelleIT
     * </ul>
     */
    @Test
-   public void TA_DTS_14051() throws Exception
+   public void TA_DTS_15051() throws Exception
    {
    }
 }
