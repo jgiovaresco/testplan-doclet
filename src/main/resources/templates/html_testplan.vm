@@ -6,7 +6,7 @@
 <style type="text/css">
 
 body,
-h1,h2,h3,h4,
+h1,h2,h3,h4,h5,
 hr {
 	margin: 0px;
 	padding: 0px;
@@ -14,36 +14,121 @@ hr {
 
 body {
 	font-family: sans-serif;
+	font-size: 12pt;
+	
+	counter-reset: title1;
 }
 
-h2 {
+h1 {
+	text-align : center;
+	margin-left: 0px;
 	margin-bottom: 10px;
-} 
-h3 {
-	margin-top: 5px;
-	margin-bottom: 5px;
-} 
-/*
-.right {
-	text-align: right;
 }
-*/
+
+h2,h3,h4,h5 {
+	margin-left: -15px;
+}
+
+h2:before {
+    content: counter(title1) ". ";
+    counter-increment: title1;
+}
+h2 {
+	font-size: 18pt;
+	margin-bottom: 10px;
+	
+	counter-reset: title2;
+}
+
+h3:before {
+    content: counter(title1) "." counter(title2) ". ";
+    counter-increment: title2;
+}
+h3 {
+	font-size: 16pt;
+} 
+
+h4 {
+	font-size: 14pt;
+} 
+h5 {
+	font-size: 12pt;
+	margin-top: 5px;
+}
+
+a {
+	color: black;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+a[name]:hover {
+	text-decoration: none;
+}
+
+
 .indente {
-	margin-left: 1em;
+	margin-left: 15px;
+}
+
+
+/* index */
+#index ol {
+	padding-left: 20px;
+	font-weight: bold;
+	list-style-type: none;
+	
+	counter-reset: item1;
+}
+#index ol > li:before {
+	content: counter(item1) ". "; counter-increment: item1;
+}
+#index ol > li {
+	margin-top: 5px;
+}
+
+#index ol ul {
+	font-weight: normal;
+	list-style-type: none;
+	
+	counter-reset: item2; 
+}
+#index ol ul > li:before {
+	content: counter(item1) "." counter(item2) ". " ; counter-increment: item2;
+}
+#index ol ul>li {
+	margin-top : 5px;
+}
+
+/* requirements */
+#requirements ul.services {
+	list-style-type : none;
+	padding-left: 10px;
+}
+#requirements ul.services a {
+	font-weight: bold;
+}
+#requirements li {
+	margin-top: 10px;
 }
 
 .testcase {
-<!--	border-bottom: 1px solid black;-->
+	margin-bottom: 10px;
 }
+
 </style>
 </head>
 <body>
 
-<h1><a name="index">Sommaire</a></h1>
+<h1 class="doc_title">Cahier de tests de $applicatioName</h1>
+
 <div id="index" class="indente">
-	<ul>
+	<h2>Sommaire</h2>
+	<ol class="index_1st">
+		<li><a href="#index">Sommaire</li>
 		<li><a href="#requirements">Couvertures des exigences fonctionnelles
-		<ul>		
+		<ul class="index_2nd">		
 			#foreach($service in $testplan.testedServices)
 				<li><a href="#requirements_$service">$service</a></li>
 			#end
@@ -56,14 +141,14 @@ h3 {
 			#end
 			</ul>
 		</li>
-	</ul>
+	</ol>
 </div>
 
-<h1>Couvertures des exigences fonctionnelles</h1>
 <div id="requirements" class="indente">
+	<h2>Couvertures des exigences fonctionnelles</h2>
 	<p>Ce chapitre présente la couverture des exigences fonctionnelles de $applicatioName</p>
 	
-	<ul>
+	<ul class="services">
 	#foreach($service in $testplan.testedServices)
 		<li>
 			<a name="requirements_$service">$service</a>
@@ -84,21 +169,21 @@ h3 {
 	</ul>
 </div>
 
-<h1>Cas de tests</h1>
 <div id="testcases" class="indente">
+	<h2>Cas de tests</h2>
 	<p>Ce chapitre présente les cas de tests de $applicatioName</p>
 	
 #foreach($service in $testplan.testedServices)
-	<h2><a name="testcases_$service">$service</a></h2>
-	<div class="indente">
+	<div id="testcases_$service" class="indente">
+		<h3>$service</h3>
 		<p>Cette section présente les cas de tests de $service.</p>
 		
 	#foreach($case in $testplan.getTestCases("$service"))
-		<h3>$case.name - $case.title</h3>
 		<div class="indente testcase">
+			<h4>$case.name - $case.title</h4>
 			
-			<h4>Exigences fonctionnelles couvertes</h4>
 			<div class="indente test-requirement">
+			<h5>Exigences fonctionnelles couvertes</h5>
 			<ul>
 			#foreach($requirement in $case.requirements)
 				<li><a href="#$requirement">$requirement : $testplan.getRequirement("$requirement").description</a></li>
@@ -106,27 +191,31 @@ h3 {
 			</ul>
 			</div>
 			
-			<h4>Prerequis</h4>
 			<div class="indente test-prerequisite">
+			<h5>Prerequis</h5>
 			$case.prerequisite
 			</div>
 			
-			<h4>Données en entrée</h4>
 			<div class="indente test-input">
+			<h5>Données en entrée</h5>
 			$case.input
 			</div>
 			
-			<h4>Résultat attendu</h4>
 			<div class="indente test-result">
+			<h5>Résultat attendu</h5>
 			$case.result
 			</div>
 			
 			#if( $foreach.hasNext)
+			<!--
 				<p class="right"><a href="#index">Retour au sommaire</a></p>
+			-->				
 			#end
 		</div>
 	#end
+		<!--
 		<p class="right"><a href="#index">Retour au sommaire</a></p>
+		-->
 	</div>
 #end
 
