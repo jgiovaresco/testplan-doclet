@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package fr.egiov.testplandoclet.plan;
+package com.github.testplandoclet.plan;
 
 import java.util.ArrayList;
 import java.util.List;

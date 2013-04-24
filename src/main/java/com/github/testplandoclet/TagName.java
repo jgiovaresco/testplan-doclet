@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package fr.egiov.testplandoclet;
+package com.github.testplandoclet;
 
 /**
  * Defines the specifics tags name of the doclet.

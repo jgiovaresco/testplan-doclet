@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package fr.egiov.testplandoclet.html;
+package com.github.testplandoclet.html;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,8 +28,8 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.log.Log4JLogChute;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-import fr.egiov.testplandoclet.Configuration;
-import fr.egiov.testplandoclet.plan.TestPlan;
+import com.github.testplandoclet.Configuration;
+import com.github.testplandoclet.plan.TestPlan;
 
 /**
  * Implementation of the interface {@link TestPlanHtmlGenerator}.

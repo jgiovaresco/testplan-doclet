@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package fr.egiov.testplandoclet.plan;
+package com.github.testplandoclet.plan;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +28,7 @@ import java.util.TreeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.egiov.testplandoclet.HtmlTestPlanDoclet;
+import com.github.testplandoclet.HtmlTestPlanDoclet;
 
 /**
  * Defines the test plan.

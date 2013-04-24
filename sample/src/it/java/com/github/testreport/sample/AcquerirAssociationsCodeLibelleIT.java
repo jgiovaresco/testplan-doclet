@@ -1,4 +1,4 @@
-package fr.egiov.testreport.sample;
+package com.github.testreport.sample;
 
 import org.junit.After;
 import org.junit.Before;

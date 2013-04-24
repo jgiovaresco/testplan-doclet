@@ -1,4 +1,4 @@
-package fr.egiov.testreport.sample;
+package com.github.testreport.sample;
 
 /**
  * Définit les exigences fonctionnelles

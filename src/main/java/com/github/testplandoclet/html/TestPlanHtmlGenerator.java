@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package fr.egiov.testplandoclet.html;
+package com.github.testplandoclet.html;
 
-import fr.egiov.testplandoclet.plan.TestPlan;
+import com.github.testplandoclet.plan.TestPlan;
 
 /**
  * Defines the interface for the generator of test plan in HTML.

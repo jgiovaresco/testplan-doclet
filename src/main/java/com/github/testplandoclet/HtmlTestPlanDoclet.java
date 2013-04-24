@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package fr.egiov.testplandoclet;
+package com.github.testplandoclet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +37,11 @@ import com.sun.javadoc.Tag;
 import com.sun.tools.doclets.internal.toolkit.taglets.TagletManager;
 import com.sun.tools.doclets.internal.toolkit.util.MessageRetriever;
 
-import fr.egiov.testplandoclet.html.TestPlanHtmlGenerator;
-import fr.egiov.testplandoclet.html.TestPlanHtmlGeneratorImpl;
-import fr.egiov.testplandoclet.plan.Requirement;
-import fr.egiov.testplandoclet.plan.TestCase;
-import fr.egiov.testplandoclet.plan.TestPlan;
+import com.github.testplandoclet.html.TestPlanHtmlGenerator;
+import com.github.testplandoclet.html.TestPlanHtmlGeneratorImpl;
+import com.github.testplandoclet.plan.Requirement;
+import com.github.testplandoclet.plan.TestCase;
+import com.github.testplandoclet.plan.TestPlan;
 
 /**
  * This javadoc doclet creates the test plan from the javadoc of JUnit testcase

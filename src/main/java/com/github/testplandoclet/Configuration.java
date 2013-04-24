@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package fr.egiov.testplandoclet;
+package com.github.testplandoclet;
 
 import com.sun.javadoc.DocErrorReporter;
 import com.sun.javadoc.RootDoc;
 
-import fr.egiov.testplandoclet.log.Log;
+import com.github.testplandoclet.log.Log;
 
 /**
  * Handles the TestPlanDoclets configuration properties.

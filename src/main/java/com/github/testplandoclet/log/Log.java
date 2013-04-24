@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package fr.egiov.testplandoclet.log;
+package com.github.testplandoclet.log;
 
 import java.io.File;
 import java.util.Properties;

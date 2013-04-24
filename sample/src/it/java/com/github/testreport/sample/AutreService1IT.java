@@ -1,4 +1,4 @@
-package fr.egiov.testreport.sample;
+package com.github.testreport.sample;
 
 import org.junit.After;
 import org.junit.Before;
@@ -6,10 +6,10 @@ import org.junit.Test;
 
 /**
  * Tests AutreServiceIT
- * @domain CBS
+ * @domain DTS
  * @service AutreService
  */
-public class AutreService2IT {
+public class AutreService1IT {
 	// ------------------------- Constantes private -------------------------
 
 	// ------------------------- Membres private -------------------------
