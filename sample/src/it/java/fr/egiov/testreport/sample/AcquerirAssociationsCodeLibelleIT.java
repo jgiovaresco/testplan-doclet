@@ -6,6 +6,7 @@ import org.junit.Test;
 
 /**
  * Tests AcquerirAssociationsCodeLibelleIT
+ * @domain DTS
  * @service AcquerirAssociationsCodeLibelle
  */
 public class AcquerirAssociationsCodeLibelleIT

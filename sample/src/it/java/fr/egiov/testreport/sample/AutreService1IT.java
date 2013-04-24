@@ -6,10 +6,10 @@ import org.junit.Test;
 
 /**
  * Tests AutreServiceIT
- * 
+ * @domain DTS
  * @service AutreService
  */
-public class AutreServiceIT {
+public class AutreService1IT {
 	// ------------------------- Constantes private -------------------------
 
 	// ------------------------- Membres private -------------------------
