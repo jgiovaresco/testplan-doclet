@@ -18,13 +18,15 @@
  */
 package com.github.testplandoclet;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.testplandoclet.html.TestPlanHtmlGenerator;
+import com.github.testplandoclet.html.TestPlanHtmlGeneratorImpl;
+import com.github.testplandoclet.plan.Requirement;
+import com.github.testplandoclet.plan.TestCase;
+import com.github.testplandoclet.plan.TestPlan;
 import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.DocErrorReporter;
@@ -34,14 +36,6 @@ import com.sun.javadoc.LanguageVersion;
 import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.RootDoc;
 import com.sun.javadoc.Tag;
-import com.sun.tools.doclets.internal.toolkit.taglets.TagletManager;
-import com.sun.tools.doclets.internal.toolkit.util.MessageRetriever;
-
-import com.github.testplandoclet.html.TestPlanHtmlGenerator;
-import com.github.testplandoclet.html.TestPlanHtmlGeneratorImpl;
-import com.github.testplandoclet.plan.Requirement;
-import com.github.testplandoclet.plan.TestCase;
-import com.github.testplandoclet.plan.TestPlan;
 
 /**
  * This javadoc doclet creates the test plan from the javadoc of JUnit testcase
@@ -168,13 +162,19 @@ public class HtmlTestPlanDoclet extends Doclet {
 		MethodDoc[] methods = null;
 		FieldDoc[] fields = null;
 
+		String domain = null;
 		String serviceTested = null;
-		List<Requirement> requirements = null;
 		TestCase testcase = null;
 		boolean isTestClass = false;
 		boolean isRequirementsClass = false;
 
 		LOGGER.debug("Processing class {}", p_clazz);
+
+		for (Tag tag : p_clazz.tags(TagName.TAG_DOMAIN)) {
+			LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
+			domain = tag.text();
+			isTestClass = true;
+		}
 
 		for (Tag tag : p_clazz.tags(TagName.TAG_SERVICE)) {
 			LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
@@ -189,9 +189,7 @@ public class HtmlTestPlanDoclet extends Doclet {
 
 		if (isRequirementsClass) {
 			fields = p_clazz.fields();
-			requirements = processFieldsOfClassDefiningRequirements(fields);
-
-			m_testPlan.add(requirements);
+			processFieldsOfClassDefiningRequirements(fields);
 		}
 
 		if (isTestClass) {
@@ -200,7 +198,8 @@ public class HtmlTestPlanDoclet extends Doclet {
 				for (MethodDoc method : methods) {
 					if (true == isTestMethod(method)) {
 						testcase = processMethod(method);
-						testcase.setTestedService(serviceTested);
+						testcase.setDomain(domain);
+						testcase.setService(serviceTested);
 
 						m_testPlan.add(testcase);
 					}
@@ -211,15 +210,21 @@ public class HtmlTestPlanDoclet extends Doclet {
 
 	/**
 	 * Process fields of a class defining requirements.
+	 * <p>
+	 * For each fields
+	 * <ul>
+	 * <li>if tag <code>requirement</code> is defined, a new {@link Requirement}
+	 * is added to the {@link TestPlan}.</li>
+	 * </ul>
+	 * </p>
 	 * 
 	 * @param p_fields
 	 *            The fields to process.
 	 * @return The requirements list defined in the fields list.
 	 */
-	public List<Requirement> processFieldsOfClassDefiningRequirements(
-			FieldDoc[] p_fields) {
-		List<Requirement> requirements = new ArrayList<Requirement>();
+	public void processFieldsOfClassDefiningRequirements(FieldDoc[] p_fields) {
 		Requirement requirement = null;
+		String domain = null;
 		String service = null;
 		String code = null;
 		String description = null;
@@ -228,25 +233,31 @@ public class HtmlTestPlanDoclet extends Doclet {
 			for (FieldDoc field : p_fields) {
 				LOGGER.debug("Processing field {}", field);
 
+				for (Tag tag : field.tags(TagName.TAG_DOMAIN)) {
+					LOGGER.debug("Processing tag field {} : {}", tag.name(),
+							tag.text());
+					domain = tag.text();
+				}
+
 				for (Tag tag : field.tags(TagName.TAG_SERVICE)) {
 					LOGGER.debug("Processing tag field {} : {}", tag.name(),
 							tag.text());
 					service = tag.text();
 				}
-				
+
 				for (Tag tag : field.tags(TagName.TAG_REQUIREMENT)) {
 					LOGGER.debug("Processing tag field {} : {}", tag.name(),
 							tag.text());
 					code = field.name();
 					description = (String) field.constantValue();
 				}
-				
-				requirement = new Requirement(service, code, description);
-				requirements.add(requirement);
+
+				requirement = new Requirement(domain, service, code,
+						description);
+
+				m_testPlan.add(requirement);
 			}
 		}
-
-		return requirements;
 	}
 
 	/**
@@ -296,16 +307,17 @@ public class HtmlTestPlanDoclet extends Doclet {
 		// @input
 		for (Tag tag : p_method.tags(TagName.TAG_INPUT)) {
 			LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
-			
+
 			String value = "";
-			
+
 			for (Tag inlineTag : tag.inlineTags()) {
 				LOGGER.debug("Processing inlinetag {} : {}", inlineTag.name(),
 						inlineTag.text());
 				if ("@code".equals(inlineTag.name())) {
-					value += "<pre>" + StringEscapeUtils.escapeHtml(inlineTag.text()) + "</pre>";
-				}
-				else {
+					value += "<pre>"
+							+ StringEscapeUtils.escapeHtml(inlineTag.text())
+							+ "</pre>";
+				} else {
 					value += inlineTag.text();
 				}
 			}

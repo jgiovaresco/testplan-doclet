@@ -23,12 +23,15 @@ package com.github.testplandoclet.plan;
  * 
  * @author Julien Giovaresco
  */
-public class Requirement {
+public class Requirement implements Comparable<Requirement> {
 	// ------------------------- private constants -------------------------
 
 	// ------------------------- private members -------------------------
 
-	/** The service which requirement belongs. */
+	/** The domain to which requirement belongs. */
+	private String m_domain = null;
+
+	/** The service to which requirement belongs. */
 	private String m_service = null;
 
 	/** The code of the requirement. */
@@ -42,15 +45,19 @@ public class Requirement {
 	/**
 	 * Constructor
 	 * 
+	 * @param p_domain
+	 *            The domain to which the requirement belongs.
 	 * @param p_service
-	 *            The service which requirement belongs.
+	 *            The service to which the requirement belongs.
 	 * @param p_code
 	 *            The code of the requirement.
 	 * @param p_description
 	 *            The description of the requirement.
 	 */
-	public Requirement(String p_service, String p_code, String p_description) {
+	public Requirement(String p_domain, String p_service, String p_code,
+			String p_description) {
 		super();
+		this.m_domain = p_domain;
 		this.m_service = p_service;
 		this.m_code = p_code;
 		this.m_description = p_description;
@@ -61,17 +68,49 @@ public class Requirement {
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(Requirement p_requirement) {
+		return m_code.compareTo(p_requirement.getCode());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Requirement [m_service=" + m_service + ", m_code=" + m_code
-				+ ", m_description=" + m_description + "]";
+		return "Requirement [m_domain=" + m_domain + ", m_service=" + m_service
+				+ ", m_code=" + m_code + ", m_description=" + m_description
+				+ "]";
 	}
 
 	// ------------------------- private methods -------------------------
 
 	// ------------------------- public accessors -------------------------
+
+	/**
+	 * Returns domain.
+	 * 
+	 * @return The domain.
+	 * @see Requirement#m_domain
+	 */
+	public String getDomain() {
+		return m_domain;
+	}
+
+	/**
+	 * Sets domain.
+	 * 
+	 * @param p_domain
+	 *            The domain
+	 * @see Requirement#m_domain
+	 */
+	public void setDomain(String p_domain) {
+		m_domain = p_domain;
+	}
 
 	/**
 	 * Returns service.

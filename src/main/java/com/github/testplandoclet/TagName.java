@@ -29,6 +29,17 @@ public final class TagName {
 	/**
 	 * Tag defining
 	 * <ul>
+	 * <li>the domain to wich the test case belongs if this tag is in the javadoc of
+	 * a test class.</li>
+	 * <li>the domain to which the requirement is attached if this tag is in
+	 * the javadoc of a constant in a class defining requirement.</li>
+	 * </ul>
+	 */
+	public static final String TAG_DOMAIN = "domain";
+	
+	/**
+	 * Tag defining
+	 * <ul>
 	 * <li>the service tested by the test case if this tag is in the javadoc of
 	 * a test class.</li>
 	 * <li>the service to which the requirement is attached if this tag is in

@@ -7,7 +7,7 @@ import org.junit.Test;
 /**
  * Tests AutreServiceIT
  * @domain CBS
- * @service AutreService
+ * @service AutreService2
  */
 public class AutreService2IT {
 	// ------------------------- Constantes private -------------------------
@@ -33,7 +33,7 @@ public class AutreService2IT {
 	/**
 	 * @title cas 1 pour autre service.
 	 * 
-	 * @requirement {@link ExigencesFonctionnelles#RQ_00800} 
+	 * @requirement {@link ExigencesFonctionnelles#RQ_10800} 
 	 * 
 	 * @prerequisite Le service est déployé
 	 * 
@@ -53,7 +53,7 @@ public class AutreService2IT {
 	/**
 	 * @title Acquisition des associations code/libellé cas 2
 	 * 
-	 * @requirement {@link ExigencesFonctionnelles#RQ_00801} 
+	 * @requirement {@link ExigencesFonctionnelles#RQ_10801} 
 	 * 
 	 * @prerequisite Le service est déployé.
 	 * 

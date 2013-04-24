@@ -42,7 +42,7 @@ public class HtmlTestPlanDocletTest {
 		StringWriter notice = new StringWriter();
 
 		String[] args = new String[] { "-sourcepath", "./sample/src/it/java",
-				"-subpackages", "fr", "fr" };
+				"-subpackages", "com", "com" };
 
 		Main.execute("HtmlTestPlanDoclet", new PrintWriter(err),
 				new PrintWriter(warn), new PrintWriter(notice),
@@ -61,8 +61,8 @@ public class HtmlTestPlanDocletTest {
 		// "-subpackages", "fr",
 		// "-private" };
 		String[] args = new String[] { "-debug", "-file", fileName,
-				"-sourcepath", "./sample/src/it/java", "-subpackages", "fr",
-				"fr" };
+				"-sourcepath", "./sample/src/it/java", "-subpackages", "com",
+				"com" };
 
 		Main.execute("HtmlTestPlanDoclet", HtmlTestPlanDoclet.class.getName(),
 				args);

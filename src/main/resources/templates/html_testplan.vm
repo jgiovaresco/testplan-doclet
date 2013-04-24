@@ -6,7 +6,7 @@
 <style type="text/css">
 
 body,
-h1,h2,h3,h4,h5,
+h1,h2,h3,h4,h5,h6,
 hr {
 	margin: 0px;
 	padding: 0px;
@@ -14,7 +14,7 @@ hr {
 
 body {
 	font-family: sans-serif;
-	font-size: 12pt;
+	font-size: 10pt;
 	
 	counter-reset: title1;
 }
@@ -25,7 +25,7 @@ h1 {
 	margin-bottom: 10px;
 }
 
-h2,h3,h4,h5 {
+h2,h3,h4,h5,h6 {
 	margin-left: -15px;
 }
 
@@ -46,13 +46,23 @@ h3:before {
 }
 h3 {
 	font-size: 16pt;
+	
+	counter-reset: title3;
 } 
 
+h4:before {
+    content: counter(title1) "." counter(title2) "." counter(title3) ". ";
+    counter-increment: title3;
+}
 h4 {
 	font-size: 14pt;
 } 
 h5 {
 	font-size: 12pt;
+	margin-top: 5px;
+}
+h6 {
+	font-size: 10pt;
 	margin-top: 5px;
 }
 
@@ -72,6 +82,51 @@ a[name]:hover {
 	margin-left: 15px;
 }
 
+/*  */
+ol {
+	padding-left: 20px;
+	font-weight: bold;
+	list-style-type: none;
+	
+	counter-reset: item1;
+}
+ol > li:before {
+	content: counter(item1) ". "; 
+	counter-increment: item1;
+}
+ol > li {
+	margin-top: 5px;
+}
+
+ol ul {
+	font-weight: normal;
+	list-style-type: none;
+	
+	counter-reset: item2; 
+}
+ol ul > li:before {
+	content: counter(item1) "." counter(item2) ". "; 
+	counter-increment: item2;
+}
+ol ul>li {
+	margin-top : 5px;
+}
+
+ul.requirements {
+	font-weight: normal;
+	list-style-type: disc;
+}
+ul.requirements > li:before {
+	content: ""; 
+}
+
+ul.requirements_cover {
+	font-weight: normal;
+	list-style-type: circle;
+}
+ul.requirements_cover > li:before {
+	content: ""; 
+}
 
 /* index */
 #index ol {
@@ -82,7 +137,8 @@ a[name]:hover {
 	counter-reset: item1;
 }
 #index ol > li:before {
-	content: counter(item1) ". "; counter-increment: item1;
+	content: counter(item1) ". "; 
+	counter-increment: item1;
 }
 #index ol > li {
 	margin-top: 5px;
@@ -95,10 +151,22 @@ a[name]:hover {
 	counter-reset: item2; 
 }
 #index ol ul > li:before {
-	content: counter(item1) "." counter(item2) ". " ; counter-increment: item2;
+	content: counter(item1) "." counter(item2) ". "; 
+	counter-increment: item2;
 }
 #index ol ul>li {
 	margin-top : 5px;
+}
+
+#index ol ul ul {
+	font-weight: normal;
+	list-style-type: none;
+	
+	counter-reset: item3; 
+}
+#index ol ul ul > li:before {
+	content: counter(item1) "." counter(item2) "." counter(item3) ". ";
+	counter-increment: item3;
 }
 
 /* requirements */
@@ -125,19 +193,37 @@ a[name]:hover {
 
 <div id="index" class="indente">
 	<h2>Sommaire</h2>
-	<ol class="index_1st">
+	<ol>
 		<li><a href="#index">Sommaire</li>
 		<li><a href="#requirements">Couvertures des exigences fonctionnelles
-		<ul class="index_2nd">		
-			#foreach($service in $testplan.testedServices)
-				<li><a href="#requirements_$service">$service</a></li>
+		<ul>		
+			#foreach($domain in $testplan.domains)
+				<li>
+					<a href="#requirements_$domain.name">$domain.name</a>
+					<ul>
+					#foreach($service in $domain.services)
+						<li>
+							<a href="#requirements_$service.name">$service.name</a>
+						</li>
+					#end
+					</ul>
+				</li>
 			#end
 			</ul>
 		</li>
 		<li><a href="#testcases">Cas de tests</a>
 			<ul>		
-			#foreach($service in $testplan.testedServices)
-				<li><a href="#testcases_$service">$service</a></li>
+			#foreach($domain in $testplan.domains)
+				<li>
+					<a href="#testcases_$domain.name">$domain.name</a>
+					<ul>
+					#foreach($service in $domain.services)
+						<li>
+							<a href="#testcases_$service.name">$service.name</a>
+						</li>
+					#end
+					</ul>	
+				</li>
 			#end
 			</ul>
 		</li>
@@ -146,79 +232,93 @@ a[name]:hover {
 
 <div id="requirements" class="indente">
 	<h2>Couvertures des exigences fonctionnelles</h2>
-	<p>Ce chapitre présente la couverture des exigences fonctionnelles de $applicatioName</p>
+	<p>Ce chapitre présente la couverture des exigences fonctionnelles de <b>$applicatioName</b></p>
 	
-	<ul class="services">
-	#foreach($service in $testplan.testedServices)
+	<ol>
+		#foreach($domain in $testplan.domains)
 		<li>
-			<a name="requirements_$service">$service</a>
+			<a name="requirements_$domain.name">$domain.name</a>
 			<ul>
-				#foreach($requirement in $testplan.getRequirements("$service"))
-					<li>
-						<a name="$requirement.code">$requirement.code : $requirement.description</a>
-						<ul>
-						#foreach($case in $testplan.getTestCases($requirement))
-							<li>$case.name</li>
+				#foreach($service in $domain.services)
+				<li> 
+					<a name="requirements_$service.name">$service.name</a>
+					<ul class="requirements">
+						#foreach($requirement in $service.requirements)
+							<li>
+								<a name="$requirement.code">$requirement.code : $requirement.description</a>
+								<ul class="requirements_cover">
+								#foreach($case in $service.getRequirementCover($requirement))
+								##	<li>TODO : les cas couvrant l'exigence</li>
+									<li>$case.name</li>
+								#end
+								</ul>
+							</li>	
 						#end
-						</ul>
-					</li>	
+					</ul>
+				</li>	
 				#end
 			</ul>
 		</li>	
-	#end
-	</ul>
+		#end
+	</ol>
 </div>
 
 <div id="testcases" class="indente">
 	<h2>Cas de tests</h2>
-	<p>Ce chapitre présente les cas de tests de $applicatioName</p>
+	<p>Ce chapitre présente les cas de tests de <b>$applicatioName</b></p>
 	
-#foreach($service in $testplan.testedServices)
-	<div id="testcases_$service" class="indente">
-		<h3>$service</h3>
-		<p>Cette section présente les cas de tests de $service.</p>
-		
-	#foreach($case in $testplan.getTestCases("$service"))
-		<div class="indente testcase">
-			<h4>$case.name - $case.title</h4>
-			
-			<div class="indente test-requirement">
-			<h5>Exigences fonctionnelles couvertes</h5>
-			<ul>
-			#foreach($requirement in $case.requirements)
-				<li><a href="#$requirement">$requirement : $testplan.getRequirement("$requirement").description</a></li>
+#foreach($domain in $testplan.domains)
+	<div id="testcases_$domain.name" class="indente">
+		<h3>$domain.name</h3>
+		<p>Cette section présente les cas de tests de $domain.name</p>
+	
+		#foreach($service in $domain.services)
+			<div id="testcases_$service" class="indente">
+				<h4>$service.name</h3>
+				<p>Cette section présente les cas de tests de $service.name</p>
+				
+			#foreach($case in $service.testCases)
+				<div class="indente testcase">
+					<h5>$case.name - $case.title</h4>
+					
+					<div class="indente test-requirement">
+					<h6>Exigences fonctionnelles couvertes</h6>
+					<ul>
+					#foreach($requirement in $case.requirements)
+						<li><a href="#$requirement">$requirement : $service.getRequirement("$requirement").description</a></li>
+					#end
+					</ul>
+					</div>
+					
+					<div class="indente test-prerequisite">
+					<h6>Prerequis</h6>
+					$case.prerequisite
+					</div>
+					
+					<div class="indente test-input">
+					<h6>Données en entrée</h6>
+					$case.input
+					</div>
+					
+					<div class="indente test-result">
+					<h6>Résultat attendu</h6>
+					$case.result
+					</div>
+					
+					#if( $foreach.hasNext)
+					<!--
+						<p class="right"><a href="#index">Retour au sommaire</a></p>
+					-->				
+					#end
+				</div>
 			#end
-			</ul>
-			</div>
-			
-			<div class="indente test-prerequisite">
-			<h5>Prerequis</h5>
-			$case.prerequisite
-			</div>
-			
-			<div class="indente test-input">
-			<h5>Données en entrée</h5>
-			$case.input
-			</div>
-			
-			<div class="indente test-result">
-			<h5>Résultat attendu</h5>
-			$case.result
-			</div>
-			
-			#if( $foreach.hasNext)
-			<!--
+				<!--
 				<p class="right"><a href="#index">Retour au sommaire</a></p>
-			-->				
-			#end
-		</div>
-	#end
-		<!--
-		<p class="right"><a href="#index">Retour au sommaire</a></p>
-		-->
+				-->
+			</div>
+		#end
 	</div>
 #end
-
 </div>
 
 </body>

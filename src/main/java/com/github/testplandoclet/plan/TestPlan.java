@@ -18,17 +18,13 @@
  */
 package com.github.testplandoclet.plan;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.github.testplandoclet.HtmlTestPlanDoclet;
 
 /**
  * Defines the test plan.
@@ -40,64 +36,53 @@ public class TestPlan {
 
 	/** The logger. */
 	private final static Logger LOGGER = LoggerFactory
-			.getLogger(HtmlTestPlanDoclet.class);
+			.getLogger(TestPlan.class);
 
 	// ------------------------- private members -------------------------
 
-	/** The test cases of the test plan. */
-	private Map<String, TestCase> m_testcases;
-
-	/** The services' testcases. */
-	private Map<String, List<String>> m_serviceTestCases;
-
-	/** The requirements. */
-	private Map<String, Requirement> m_requirements;
-
-	/** The services' requirements. */
-	private Map<String, List<String>> m_serviceRequirements;
+	/** The domains of the test plan. */
+	private Map<String, Domain> m_domains;
 	
-	/** The requirements' cover. */
-	private Map<String, List<String>> m_requirementsCover;
-
 	// ------------------------- constructors -------------------------
 
 	/**
 	 * Empty constructor.
 	 */
 	public TestPlan() {
-		m_testcases = new TreeMap<String, TestCase>();
-		m_serviceTestCases = new TreeMap<String, List<String>>();
-		m_requirements = new TreeMap<String, Requirement>();
-		m_serviceRequirements = new TreeMap<String, List<String>>();
-		m_requirementsCover = new TreeMap<String, List<String>>();
+		m_domains = new TreeMap<String, Domain>();
 	}
 
 	// ------------------------- public methods -------------------------
 
 	/**
-	 * Adds requirements to the test plan.
+	 * Adds a requirement to the test plan.
 	 * 
-	 * @param p_requirements
-	 *            The requirements to add.
+	 * @param p_requirement
+	 *            The requirement to add.
 	 */
-	public void add(List<Requirement> p_requirements) {
-		String service = null;
-		List<String> requirements = null;
+	public void add(Requirement p_requirement) {
+		Domain domaine = null;
+		Service service = null;
+
+		LOGGER.debug("Adding requirement {} to the test plan", p_requirement);
 		
-		for (Requirement requirement : p_requirements) {
-			LOGGER.debug("Adding requirement {} to the test plan", requirement);
-			m_requirements.put(requirement.getCode(), requirement);
-		
-			service = requirement.getService();
-			LOGGER.debug("Updating the services' requirements for {}", service);
-			requirements = m_serviceRequirements.get(service);
-			if (null == requirements) {
-				LOGGER.debug("No requirement for the service {}", service);
-				requirements = new ArrayList<String>();
-				m_serviceRequirements.put(service, requirements);
-			}
-			requirements.add(requirement.getCode());
+		domaine = m_domains.get(p_requirement.getDomain());
+		if (null == domaine)
+		{
+			LOGGER.debug("Creates new domain {} to the test plan", p_requirement.getDomain());
+			domaine = new Domain(p_requirement.getDomain());
+			m_domains.put(p_requirement.getDomain(), domaine);
 		}
+		
+		service = domaine.getService(p_requirement.getService());
+		if (null == service)
+		{
+			LOGGER.debug("Creates new service {} for the domain {}", p_requirement.getService(), domaine.getName());
+			service = new Service(p_requirement.getService());
+			domaine.addService(service);
+		}
+		
+		service.addRequirement(p_requirement);
 	}
 
 	/**
@@ -107,117 +92,36 @@ public class TestPlan {
 	 *            The testcase to add.
 	 */
 	public void add(TestCase p_testcase) {
-		String testedService = null;
-		String testcaseName = null;
-		List<String> testcases = null;
-
-		testcaseName = p_testcase.getName();
-		testedService = p_testcase.getTestedService();
-
-		LOGGER.debug("Adding testcase {} for the service {} to the test plan",
-				testcaseName, testedService);
-		m_testcases.put(testcaseName, p_testcase);
-
-		// 
+		Domain domaine = null;
+		Service service = null;
 		
-		testcases = m_serviceTestCases.get(testedService);
-		LOGGER.debug("Updating the services' cover for {}", testedService);
-		if (null == testcases) {
-			LOGGER.debug("No testcase for the service {}", testedService);
-			testcases = new ArrayList<String>();
-			m_serviceTestCases.put(testedService, testcases);
-		}
-		testcases.add(testcaseName);
-
-		//
+		LOGGER.debug("Adding test case {} to the test plan", p_testcase);
 		
-		for (String requirement : p_testcase.getRequirements()) {
-			LOGGER.debug("Updating the requirements' cover for {}", requirement);
-			testcases = m_requirementsCover.get(requirement);
-			if (null == testcases) {
-				LOGGER.debug("No testcase for the requirement {}", requirement);
-				testcases = new ArrayList<String>();
-				m_requirementsCover.put(requirement, testcases);
-			}
-			testcases.add(testcaseName);
+		domaine = m_domains.get(p_testcase.getDomain());
+		if (null == domaine)
+		{
+			LOGGER.debug("Creates new domain {} to the test plan", p_testcase.getDomain());
+			domaine = new Domain(p_testcase.getDomain());
+			m_domains.put(p_testcase.getDomain(), domaine);
 		}
+		
+		service = domaine.getService(p_testcase.getService());
+		if (null == service)
+		{
+			LOGGER.debug("Creates new service {} for the domain {}", p_testcase.getService(), domaine.getName());
+			service = new Service(p_testcase.getService());
+			domaine.addService(service);
+		}
+		
+		service.addTestcase(p_testcase);
 	}
 
 	/**
-	 * Returns the list of tested services.
+	 * Returns the domains of the test plan.
 	 * 
-	 * @return The list of tested services.
+	 * @return The domains of the test plan.
 	 */
-	public Collection<String> getTestedServices() {
-		return Collections.unmodifiableSet(m_serviceTestCases.keySet());
-	}
-
-	/**
-	 * Return testcases of a service.
-	 * 
-	 * @param p_service
-	 *            The service
-	 * @return The testcases of a service.
-	 */
-	public List<TestCase> getTestCases(String p_service) {
-		List<TestCase> testcases = null;
-
-		testcases = new ArrayList<TestCase>();
-
-		LOGGER.debug("Gets testcases for the service {}", p_service);
-		for (String testcaseName : m_serviceTestCases.get(p_service)) {
-			testcases.add(m_testcases.get(testcaseName));
-		}
-
-		return testcases;
-	}
-	
-	/**
-	 * Return testcases which cover the requirement passed in parameter.
-	 * 
-	 * @param p_requirement
-	 *            The requirement.
-	 * @return The testcases which cover the requirement passed in parameter.
-	 */
-	public List<TestCase> getTestCases(Requirement p_requirement) {
-		List<TestCase> testcases = null;
-		
-		testcases = new ArrayList<TestCase>();
-		
-		LOGGER.debug("Gets testcases which cover the requirement {}", p_requirement.getCode());
-		for (String testcaseName : m_requirementsCover.get(p_requirement.getCode())) {
-			testcases.add(m_testcases.get(testcaseName));
-		}
-		
-		return testcases;
-	}
-
-	/**
-	 * Returns requirements of a service.
-	 * 
-	 * @param p_service
-	 *            The service.
-	 * @return The requirements of a service.
-	 */
-	public List<Requirement> getRequirements(String p_service) {
-		List<Requirement> requirements = null;
-
-		requirements = new ArrayList<Requirement>();
-
-		LOGGER.debug("Gets requirements for the service {}", p_service);
-		for (String requirementCode : m_serviceRequirements.get(p_service)) {
-			requirements.add(m_requirements.get(requirementCode));
-		}
-		
-		return requirements;
-	}
-
-	/**
-	 * Returns a requirement thanks to its code.
-	 * 
-	 * @return The requirement.
-	 */
-	public Requirement getRequirement(String p_code) {
-		return m_requirements.get(p_code);
+	public Collection<Domain> getDomains() {
+		return Collections.unmodifiableCollection(m_domains.values());
 	}
 }

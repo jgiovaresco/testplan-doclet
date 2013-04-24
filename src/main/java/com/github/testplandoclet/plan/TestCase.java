@@ -26,206 +26,247 @@ import java.util.List;
  * 
  * @author Julien Giovaresco
  */
-public class TestCase
-{
-   // ------------------------- private members -------------------------
+public class TestCase implements Comparable<TestCase> {
+	// ------------------------- private members -------------------------
 
-   /** The service tested by this test case. */
-   private String m_testedService;
+	/** The domain to which requirement belongs. */
+	private String m_domain = null;
 
-   /** The name of this test case. */
-   private String m_name;
+	/** The service tested by this test case. */
+	private String m_service;
 
-   /** The title describing this test case. */
-   private String m_title;
+	/** The name of this test case. */
+	private String m_name;
 
-   /** The requirements checked by this test case. */
-   private List<String> m_requirements;
+	/** The title describing this test case. */
+	private String m_title;
 
-   /** The prerequisite required for this test case. */
-   private String m_prerequisite;
+	/** The requirements checked by this test case. */
+	private List<String> m_requirements;
 
-   /** The input data of this test case. */
-   private String m_input;
+	/** The prerequisite required for this test case. */
+	private String m_prerequisite;
 
-   /** The expected result for this test case. */
-   private String m_result;
+	/** The input data of this test case. */
+	private String m_input;
 
-   // ------------------------- constructors -------------------------
+	/** The expected result for this test case. */
+	private String m_result;
 
-   /**
-    * Empty constructor.
-    */
-   public TestCase()
-   {
-      m_requirements = new ArrayList<String>();
-   }
+	// ------------------------- constructors -------------------------
 
-   /**
-    * Constructor.
-    * @param p_name The test case name.
-    */
-   public TestCase(String p_name)
-   {
-      super();
-      m_name = p_name;
-      m_requirements = new ArrayList<String>();
-   }
+	/**
+	 * Empty constructor.
+	 */
+	public TestCase() {
+		m_requirements = new ArrayList<String>();
+	}
 
-   // ------------------------- public methods -------------------------
+	/**
+	 * Constructor.
+	 * 
+	 * @param p_name
+	 *            The test case name.
+	 */
+	public TestCase(String p_name) {
+		super();
+		m_name = p_name;
+		m_requirements = new ArrayList<String>();
+	}
 
-   /**
-    * {@inheritDoc}
-    * @see java.lang.Object#toString()
-    */
-   @Override
-   public String toString()
-   {
-      return "TestCase [m_testedService=" + m_testedService + ",\nm_name=" + m_name + ",\nm_title=" + m_title
-         + ",\nm_requirements=" + m_requirements + ",\nm_prerequisite=" + m_prerequisite + ",\nm_input="
-         + m_input + ",\nm_result=" + m_result + "]";
-   }
-   
-   // ------------------------- public accessors -------------------------
+	// ------------------------- public methods -------------------------
 
-   /**
-    * Returns the testedService.
-    * @return The testedService.
-    * @see TestCase#m_testedService
-    */
-   public String getTestedService()
-   {
-      return m_testedService;
-   }
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(TestCase p_testcase) {
+		return m_name.compareTo(p_testcase.getName());
+	}
 
-   /**
-    * Sets the testedService.
-    * @param p_testedService The testedService
-    * @see TestCase#m_testedService
-    */
-   public void setTestedService(String p_testedService)
-   {
-      m_testedService = p_testedService;
-   }
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "TestCase [m_domain=" + m_domain + ",\nm_service=" + m_service
+				+ ",\nm_name=" + m_name + ",\nm_title=" + m_title
+				+ ",\nm_requirements=" + m_requirements + ",\nm_prerequisite="
+				+ m_prerequisite + ",\nm_input=" + m_input + ",\nm_result="
+				+ m_result + "]";
+	}
 
-   /**
-    * Returns the name.
-    * @return The name.
-    * @see TestCase#m_name
-    */
-   public String getName()
-   {
-      return m_name;
-   }
+	// ------------------------- public accessors -------------------------
 
-   /**
-    * Sets the name.
-    * @param p_name The name
-    * @see TestCase#m_name
-    */
-   public void setName(String p_name)
-   {
-      m_name = p_name;
-   }
+	/**
+	 * Returns domain.
+	 * 
+	 * @return The domain.
+	 * @see TestCase#m_domain
+	 */
+	public String getDomain() {
+		return m_domain;
+	}
 
-   /**
-    * Returns the title.
-    * @return The title.
-    * @see TestCase#m_title
-    */
-   public String getTitle()
-   {
-      return m_title;
-   }
+	/**
+	 * Sets domain.
+	 * 
+	 * @param p_domain
+	 *            The domain
+	 * @see TestCase#m_domain
+	 */
+	public void setDomain(String p_domain) {
+		m_domain = p_domain;
+	}
 
-   /**
-    * Sets the title.
-    * @param p_title The title
-    * @see TestCase#m_title
-    */
-   public void setTitle(String p_title)
-   {
-      m_title = p_title;
-   }
+	/**
+	 * Returns the service.
+	 * 
+	 * @return The service.
+	 * @see TestCase#m_service
+	 */
+	public String getService() {
+		return m_service;
+	}
 
-   /**
-    * Returns the requirements.
-    * @return The requirements.
-    * @see TestCase#m_requirements
-    */
-   public List<String> getRequirements()
-   {
-      return m_requirements;
-   }
+	/**
+	 * Sets the service.
+	 * 
+	 * @param p_service
+	 *            The service
+	 * @see TestCase#m_service
+	 */
+	public void setService(String p_service) {
+		m_service = p_service;
+	}
 
-   /**
-    * Sets the requirements.
-    * @param p_requirements The requirements
-    * @see TestCase#m_requirements
-    */
-   public void setRequirements(List<String> p_requirements)
-   {
-      m_requirements = p_requirements;
-   }
+	/**
+	 * Returns the name.
+	 * 
+	 * @return The name.
+	 * @see TestCase#m_name
+	 */
+	public String getName() {
+		return m_name;
+	}
 
-   /**
-    * Returns the prerequisite.
-    * @return The prerequisite.
-    * @see TestCase#m_prerequisite
-    */
-   public String getPrerequisite()
-   {
-      return m_prerequisite;
-   }
+	/**
+	 * Sets the name.
+	 * 
+	 * @param p_name
+	 *            The name
+	 * @see TestCase#m_name
+	 */
+	public void setName(String p_name) {
+		m_name = p_name;
+	}
 
-   /**
-    * Sets the prerequisite.
-    * @param p_prerequisite The prerequisite
-    * @see TestCase#m_prerequisite
-    */
-   public void setPrerequisite(String p_prerequisite)
-   {
-      m_prerequisite = p_prerequisite;
-   }
+	/**
+	 * Returns the title.
+	 * 
+	 * @return The title.
+	 * @see TestCase#m_title
+	 */
+	public String getTitle() {
+		return m_title;
+	}
 
-   /**
-    * Returns the input.
-    * @return The input.
-    * @see TestCase#m_input
-    */
-   public String getInput()
-   {
-      return m_input;
-   }
+	/**
+	 * Sets the title.
+	 * 
+	 * @param p_title
+	 *            The title
+	 * @see TestCase#m_title
+	 */
+	public void setTitle(String p_title) {
+		m_title = p_title;
+	}
 
-   /**
-    * Sets the input.
-    * @param p_input The input
-    * @see TestCase#m_input
-    */
-   public void setInput(String p_input)
-   {
-      m_input = p_input;
-   }
+	/**
+	 * Returns the requirements.
+	 * 
+	 * @return The requirements.
+	 * @see TestCase#m_requirements
+	 */
+	public List<String> getRequirements() {
+		return m_requirements;
+	}
 
-   /**
-    * Returns the result.
-    * @return The result.
-    * @see TestCase#m_result
-    */
-   public String getResult()
-   {
-      return m_result;
-   }
+	/**
+	 * Sets the requirements.
+	 * 
+	 * @param p_requirements
+	 *            The requirements
+	 * @see TestCase#m_requirements
+	 */
+	public void setRequirements(List<String> p_requirements) {
+		m_requirements = p_requirements;
+	}
 
-   /**
-    * Sets the result.
-    * @param p_result The result
-    * @see TestCase#m_result
-    */
-   public void setResult(String p_result)
-   {
-      m_result = p_result;
-   }
+	/**
+	 * Returns the prerequisite.
+	 * 
+	 * @return The prerequisite.
+	 * @see TestCase#m_prerequisite
+	 */
+	public String getPrerequisite() {
+		return m_prerequisite;
+	}
 
+	/**
+	 * Sets the prerequisite.
+	 * 
+	 * @param p_prerequisite
+	 *            The prerequisite
+	 * @see TestCase#m_prerequisite
+	 */
+	public void setPrerequisite(String p_prerequisite) {
+		m_prerequisite = p_prerequisite;
+	}
+
+	/**
+	 * Returns the input.
+	 * 
+	 * @return The input.
+	 * @see TestCase#m_input
+	 */
+	public String getInput() {
+		return m_input;
+	}
+
+	/**
+	 * Sets the input.
+	 * 
+	 * @param p_input
+	 *            The input
+	 * @see TestCase#m_input
+	 */
+	public void setInput(String p_input) {
+		m_input = p_input;
+	}
+
+	/**
+	 * Returns the result.
+	 * 
+	 * @return The result.
+	 * @see TestCase#m_result
+	 */
+	public String getResult() {
+		return m_result;
+	}
+
+	/**
+	 * Sets the result.
+	 * 
+	 * @param p_result
+	 *            The result
+	 * @see TestCase#m_result
+	 */
+	public void setResult(String p_result) {
+		m_result = p_result;
+	}
 }

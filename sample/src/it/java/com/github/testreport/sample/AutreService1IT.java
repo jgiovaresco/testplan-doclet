@@ -7,7 +7,7 @@ import org.junit.Test;
 /**
  * Tests AutreServiceIT
  * @domain DTS
- * @service AutreService
+ * @service AutreService1
  */
 public class AutreService1IT {
 	// ------------------------- Constantes private -------------------------
