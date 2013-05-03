@@ -1,20 +1,13 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version
+ * 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ * 
  * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions
+ * and limitations under the License.
  */
 package com.github.testplandoclet;
 
@@ -38,341 +31,363 @@ import com.sun.javadoc.RootDoc;
 import com.sun.javadoc.Tag;
 
 /**
- * This javadoc doclet creates the test plan from the javadoc of JUnit testcase
- * annoted with specifics tags.
- * 
+ * This javadoc doclet creates the test plan from the javadoc of JUnit testcase annoted with specifics tags.
  * @author Julien Giovaresco
  */
-public class HtmlTestPlanDoclet extends Doclet {
-	// ------------------------- private constants -------------------------
+public class HtmlTestPlanDoclet extends Doclet
+{
+   // ------------------------- private constants -------------------------
 
-	/** The logger. */
-	private final static Logger LOGGER = LoggerFactory
-			.getLogger(HtmlTestPlanDoclet.class);
+   /** The logger. */
+   private final static Logger LOGGER = LoggerFactory.getLogger(HtmlTestPlanDoclet.class);
 
-	// ------------------------- private members -------------------------
+   // ------------------------- private members -------------------------
 
-	/** The test plan. */
-	private TestPlan m_testPlan;
+   /** The test plan. */
+   private TestPlan m_testPlan;
 
-	// ------------------------- constructors -------------------------
+   // ------------------------- constructors -------------------------
 
-	/**
-	 * The constructor for {@link HtmlTestPlanDoclet}
-	 */
-	public HtmlTestPlanDoclet() {
-		super();
-		LOGGER.debug("Creating HtmlTestPlanDoclet");
+   /**
+    * The constructor for {@link HtmlTestPlanDoclet}
+    */
+   public HtmlTestPlanDoclet()
+   {
+      super();
+      LOGGER.debug("Creating HtmlTestPlanDoclet");
 
-		m_testPlan = new TestPlan();
-	}
+      LOGGER.info(Configuration.getOptionsString());
 
-	// ------------------------- static methods -------------------------
+      m_testPlan = new TestPlan();
+   }
 
-	/**
-	 * Doclet main method.
-	 * 
-	 * @param p_root
-	 *            The root of the javadoc information.
-	 * @return true if the javadoc generation was successfull.
-	 */
-	public static boolean start(RootDoc p_root) {
-		boolean result = true;
-		HtmlTestPlanDoclet doclet = null;
+   // ------------------------- static methods -------------------------
 
-		try {
-			Configuration.start(p_root);
+   /**
+    * Doclet main method.
+    * @param p_root The root of the javadoc information.
+    * @return true if the javadoc generation was successfull.
+    */
+   public static boolean start(RootDoc p_root)
+   {
+      boolean result = true;
+      HtmlTestPlanDoclet doclet = null;
 
-			doclet = new HtmlTestPlanDoclet();
-			doclet.processRootDoc(p_root);
+      try
+      {
+         Configuration.start(p_root);
 
-			// No error processing done, simply return true.
-			result = true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			result = false;
-		}
-		return result;
-	}
+         doclet = new HtmlTestPlanDoclet();
+         doclet.processRootDoc(p_root);
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see HtmlTestPlanDoclet#languageVersion()
-	 */
-	public static LanguageVersion languageVersion() {
-		return LanguageVersion.JAVA_1_5;
-	}
+         // No error processing done, simply return true.
+         result = true;
+      }
+      catch (Exception e)
+      {
+         e.printStackTrace();
+         result = false;
+      }
+      return result;
+   }
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see com.sun.javadoc.Doclet#optionLength(java.lang.String)
-	 */
-	public static int optionLength(String p_option) {
-		return Configuration.optionLength(p_option);
-	}
+   /**
+    * {@inheritDoc}
+    * @see HtmlTestPlanDoclet#languageVersion()
+    */
+   public static LanguageVersion languageVersion()
+   {
+      return LanguageVersion.JAVA_1_5;
+   }
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see com.sun.javadoc.Doclet#validOptions(String[][], DocErrorReporter)
-	 */
-	public static boolean validOptions(String p_options[][],
-			DocErrorReporter p_reporter) {
-		return Configuration.validOptions(p_options, p_reporter);
-	}
+   /**
+    * {@inheritDoc}
+    * @see com.sun.javadoc.Doclet#optionLength(java.lang.String)
+    */
+   public static int optionLength(String p_option)
+   {
+      return Configuration.optionLength(p_option);
+   }
 
-	// ------------------------- public methods -------------------------
+   /**
+    * {@inheritDoc}
+    * @see com.sun.javadoc.Doclet#validOptions(String[][], DocErrorReporter)
+    */
+   public static boolean validOptions(String p_options[][], DocErrorReporter p_reporter)
+   {
+      return Configuration.validOptions(p_options, p_reporter);
+   }
 
-	/**
-	 * Process all classes to build the test plan.
-	 * 
-	 * @param root
-	 *            The javadoc root.
-	 */
-	public void processRootDoc(RootDoc root) {
-		ClassDoc[] classes = null;
+   // ------------------------- public methods -------------------------
 
-		classes = root.classes();
-		if (null != classes) {
-			for (ClassDoc clazz : classes) {
-				processClass(clazz);
-			}
+   /**
+    * Process all classes to build the test plan.
+    * @param root The javadoc root.
+    */
+   public void processRootDoc(RootDoc root)
+   {
+      ClassDoc[] classes = null;
+      TestPlanHtmlGenerator generator = null;
 
-			TestPlanHtmlGenerator generator = new TestPlanHtmlGeneratorImpl();
-			generator.generate("toto", m_testPlan);
-		}
-	}
+      classes = root.classes();
+      if (null != classes)
+      {
+         for (ClassDoc clazz : classes)
+         {
+            processClass(clazz);
+         }
 
-	/**
-	 * Process a class.
-	 * <p>
-	 * Its creates a new testcase if this class
-	 * <ul>
-	 * <li>has a name ending by "IT".</li>
-	 * <li>has methods annotated with @Test.</li>
-	 * </ul>
-	 * </p>
-	 * 
-	 * @param p_clazz
-	 *            The class to process
-	 */
-	public void processClass(ClassDoc p_clazz) {
-		MethodDoc[] methods = null;
-		FieldDoc[] fields = null;
+         if (null == Configuration.getTemplateFileName())
+         {
+            generator = new TestPlanHtmlGeneratorImpl();
+         }
+         else
+         {
+            generator = new TestPlanHtmlGeneratorImpl(Configuration.getTemplateFileName());
+         }
+         generator.generate(Configuration.getApplicationName(), m_testPlan);
+      }
+   }
 
-		String domain = null;
-		String serviceTested = null;
-		TestCase testcase = null;
-		boolean isTestClass = false;
-		boolean isRequirementsClass = false;
+   /**
+    * Process a class.
+    * <p>
+    * Its creates a new testcase if this class
+    * <ul>
+    * <li>has a name ending by "IT".</li>
+    * <li>has methods annotated with @Test.</li>
+    * </ul>
+    * </p>
+    * @param p_clazz The class to process
+    */
+   public void processClass(ClassDoc p_clazz)
+   {
+      MethodDoc[] methods = null;
+      FieldDoc[] fields = null;
 
-		LOGGER.debug("Processing class {}", p_clazz);
+      String domain = null;
+      String serviceTested = null;
+      TestCase testcase = null;
+      boolean isTestClass = false;
+      boolean isRequirementsClass = false;
 
-		for (Tag tag : p_clazz.tags(TagName.TAG_DOMAIN)) {
-			LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
-			domain = tag.text();
-			isTestClass = true;
-		}
+      LOGGER.debug("Processing class {}", p_clazz);
 
-		for (Tag tag : p_clazz.tags(TagName.TAG_SERVICE)) {
-			LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
-			serviceTested = tag.text();
-			isTestClass = true;
-		}
+      for (Tag tag : p_clazz.tags(TagName.TAG_DOMAIN))
+      {
+         LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
+         domain = tag.text();
+         isTestClass = true;
+      }
 
-		for (Tag tag : p_clazz.tags(TagName.TAG_REQUIREMENTS)) {
-			LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
-			isRequirementsClass = true;
-		}
+      for (Tag tag : p_clazz.tags(TagName.TAG_SERVICE))
+      {
+         LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
+         serviceTested = tag.text();
+         isTestClass = true;
+      }
 
-		if (isRequirementsClass) {
-			fields = p_clazz.fields();
-			processFieldsOfClassDefiningRequirements(fields);
-		}
+      for (Tag tag : p_clazz.tags(TagName.TAG_REQUIREMENTS))
+      {
+         LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
+         isRequirementsClass = true;
+      }
 
-		if (isTestClass) {
-			methods = p_clazz.methods();
-			if (null != methods) {
-				for (MethodDoc method : methods) {
-					if (true == isTestMethod(method)) {
-						testcase = processMethod(method);
-						testcase.setDomain(domain);
-						testcase.setService(serviceTested);
+      if (isRequirementsClass)
+      {
+         fields = p_clazz.fields();
+         processFieldsOfClassDefiningRequirements(fields);
+      }
 
-						m_testPlan.add(testcase);
-					}
-				}
-			}
-		}
-	}
+      if (isTestClass)
+      {
+         methods = p_clazz.methods();
+         if (null != methods)
+         {
+            for (MethodDoc method : methods)
+            {
+               if (true == isTestMethod(method))
+               {
+                  testcase = processMethod(method);
+                  testcase.setDomain(domain);
+                  testcase.setService(serviceTested);
 
-	/**
-	 * Process fields of a class defining requirements.
-	 * <p>
-	 * For each fields
-	 * <ul>
-	 * <li>if tag <code>requirement</code> is defined, a new {@link Requirement}
-	 * is added to the {@link TestPlan}.</li>
-	 * </ul>
-	 * </p>
-	 * 
-	 * @param p_fields
-	 *            The fields to process.
-	 * @return The requirements list defined in the fields list.
-	 */
-	public void processFieldsOfClassDefiningRequirements(FieldDoc[] p_fields) {
-		Requirement requirement = null;
-		String domain = null;
-		String service = null;
-		String code = null;
-		String description = null;
+                  m_testPlan.add(testcase);
+               }
+            }
+         }
+      }
+   }
 
-		if (null != p_fields) {
-			for (FieldDoc field : p_fields) {
-				LOGGER.debug("Processing field {}", field);
+   /**
+    * Process fields of a class defining requirements.
+    * <p>
+    * For each fields
+    * <ul>
+    * <li>if tag <code>requirement</code> is defined, a new {@link Requirement} is added to the {@link TestPlan}.</li>
+    * </ul>
+    * </p>
+    * @param p_fields The fields to process.
+    * @return The requirements list defined in the fields list.
+    */
+   public void processFieldsOfClassDefiningRequirements(FieldDoc[] p_fields)
+   {
+      Requirement requirement = null;
+      String domain = null;
+      String service = null;
+      String code = null;
+      String description = null;
 
-				for (Tag tag : field.tags(TagName.TAG_DOMAIN)) {
-					LOGGER.debug("Processing tag field {} : {}", tag.name(),
-							tag.text());
-					domain = tag.text();
-				}
+      if (null != p_fields)
+      {
+         for (FieldDoc field : p_fields)
+         {
+            LOGGER.debug("Processing field {}", field);
 
-				for (Tag tag : field.tags(TagName.TAG_SERVICE)) {
-					LOGGER.debug("Processing tag field {} : {}", tag.name(),
-							tag.text());
-					service = tag.text();
-				}
+            for (Tag tag : field.tags(TagName.TAG_DOMAIN))
+            {
+               LOGGER.debug("Processing tag field {} : {}", tag.name(), tag.text());
+               domain = tag.text();
+            }
 
-				for (Tag tag : field.tags(TagName.TAG_REQUIREMENT)) {
-					LOGGER.debug("Processing tag field {} : {}", tag.name(),
-							tag.text());
-					code = field.name();
-					description = (String) field.constantValue();
-				}
+            for (Tag tag : field.tags(TagName.TAG_SERVICE))
+            {
+               LOGGER.debug("Processing tag field {} : {}", tag.name(), tag.text());
+               service = tag.text();
+            }
 
-				requirement = new Requirement(domain, service, code,
-						description);
+            for (Tag tag : field.tags(TagName.TAG_REQUIREMENT))
+            {
+               LOGGER.debug("Processing tag field {} : {}", tag.name(), tag.text());
+               code = field.name();
+               description = (String) field.constantValue();
+            }
 
-				m_testPlan.add(requirement);
-			}
-		}
-	}
+            requirement = new Requirement(domain, service, code, description);
 
-	/**
-	 * Returns a {@link TestCase} corresponding to this test method.
-	 * <p>
-	 * Reads javadoc tags to complete the {@link TestCase}.
-	 * </p>
-	 * 
-	 * @param p_method
-	 *            The method to process
-	 * @return The {@link TestCase}.
-	 */
-	public TestCase processMethod(MethodDoc p_method) {
-		TestCase testcase = null;
+            m_testPlan.add(requirement);
+         }
+      }
+   }
 
-		LOGGER.debug("Processing method {}", p_method);
+   /**
+    * Returns a {@link TestCase} corresponding to this test method.
+    * <p>
+    * Reads javadoc tags to complete the {@link TestCase}.
+    * </p>
+    * @param p_method The method to process
+    * @return The {@link TestCase}.
+    */
+   public TestCase processMethod(MethodDoc p_method)
+   {
+      TestCase testcase = null;
 
-		testcase = new TestCase(p_method.name());
+      LOGGER.debug("Processing method {}", p_method);
 
-		// @title
-		for (Tag tag : p_method.tags(TagName.TAG_TITLE)) {
-			LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
-			testcase.setTitle(tag.text());
-		}
+      testcase = new TestCase(p_method.name());
 
-		// @requirement
-		for (Tag tag : p_method.tags(TagName.TAG_REQUIREMENT)) {
-			LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
+      // @title
+      for (Tag tag : p_method.tags(TagName.TAG_TITLE))
+      {
+         LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
+         testcase.setTitle(tag.text());
+      }
 
-			for (Tag inlineTag : tag.inlineTags()) {
-				LOGGER.debug("Processing inlinetag {} : {}", inlineTag.name(),
-						inlineTag.text());
-				if ("@link".equals(inlineTag.name())) {
+      // @requirement
+      for (Tag tag : p_method.tags(TagName.TAG_REQUIREMENT))
+      {
+         LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
 
-					testcase.getRequirements().add(
-							extractFieldNameFromLinkTag(inlineTag.text()));
-				}
-			}
-		}
+         for (Tag inlineTag : tag.inlineTags())
+         {
+            LOGGER.debug("Processing inlinetag {} : {}", inlineTag.name(), inlineTag.text());
+            if ("@link".equals(inlineTag.name()))
+            {
 
-		// @prerequisite
-		for (Tag tag : p_method.tags(TagName.TAG_PREREQUISITE)) {
-			LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
-			testcase.setPrerequisite(tag.text());
-		}
+               testcase.getRequirements().add(extractFieldNameFromLinkTag(inlineTag.text()));
+            }
+         }
+      }
 
-		// @input
-		for (Tag tag : p_method.tags(TagName.TAG_INPUT)) {
-			LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
+      // @prerequisite
+      for (Tag tag : p_method.tags(TagName.TAG_PREREQUISITE))
+      {
+         LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
+         testcase.setPrerequisite(tag.text());
+      }
 
-			String value = "";
+      // @input
+      for (Tag tag : p_method.tags(TagName.TAG_INPUT))
+      {
+         LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
 
-			for (Tag inlineTag : tag.inlineTags()) {
-				LOGGER.debug("Processing inlinetag {} : {}", inlineTag.name(),
-						inlineTag.text());
-				if ("@code".equals(inlineTag.name())) {
-					value += "<pre>"
-							+ StringEscapeUtils.escapeHtml(inlineTag.text())
-							+ "</pre>";
-				} else {
-					value += inlineTag.text();
-				}
-			}
+         String value = "";
 
-			testcase.setInput(value);
-		}
+         for (Tag inlineTag : tag.inlineTags())
+         {
+            LOGGER.debug("Processing inlinetag {} : {}", inlineTag.name(), inlineTag.text());
+            if ("@code".equals(inlineTag.name()))
+            {
+               value += "<pre>" + StringEscapeUtils.escapeHtml(inlineTag.text()) + "</pre>";
+            }
+            else
+            {
+               value += inlineTag.text();
+            }
+         }
 
-		// @result
-		for (Tag tag : p_method.tags(TagName.TAG_RESULT)) {
-			LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
-			testcase.setResult(tag.text());
-		}
+         testcase.setInput(value);
+      }
 
-		return testcase;
-	}
+      // @result
+      for (Tag tag : p_method.tags(TagName.TAG_RESULT))
+      {
+         LOGGER.debug("Processing tag {} : {}", tag.name(), tag.text());
+         testcase.setResult(tag.text());
+      }
 
-	// ------------------------- private methods -------------------------
+      return testcase;
+   }
 
-	/**
-	 * Returns true if the method is annotated with @Test
-	 * 
-	 * @param p_method
-	 *            The current method
-	 * @return true if the method is annotated with @Test
-	 */
-	private boolean isTestMethod(MethodDoc p_method) {
-		boolean testMethod = false;
+   // ------------------------- private methods -------------------------
 
-		if (null != p_method.annotations()) {
-			for (AnnotationDesc annotation : p_method.annotations()) {
-				LOGGER.debug("Processing annotation {} of {}", annotation,
-						p_method.name());
-				if ("Test".equals(annotation.annotationType().simpleTypeName())) {
-					testMethod = true;
-				}
-			}
-		}
+   /**
+    * Returns true if the method is annotated with @Test
+    * @param p_method The current method
+    * @return true if the method is annotated with @Test
+    */
+   private boolean isTestMethod(MethodDoc p_method)
+   {
+      boolean testMethod = false;
 
-		return testMethod;
-	}
+      if (null != p_method.annotations())
+      {
+         for (AnnotationDesc annotation : p_method.annotations())
+         {
+            LOGGER.debug("Processing annotation {} of {}", annotation, p_method.name());
+            if ("Test".equals(annotation.annotationType().simpleTypeName()))
+            {
+               testMethod = true;
+            }
+         }
+      }
 
-	/**
-	 * Extract from the Link tag text the name of a field.
-	 * 
-	 * @param p_Text
-	 *            The text of a link tag.
-	 * @return The name of the field.
-	 */
-	private String extractFieldNameFromLinkTag(String p_Text) {
-		String name = null;
-		int index = 0;
+      return testMethod;
+   }
 
-		index = p_Text.indexOf('#');
-		name = p_Text.substring(index + 1, p_Text.length());
+   /**
+    * Extract from the Link tag text the name of a field.
+    * @param p_Text The text of a link tag.
+    * @return The name of the field.
+    */
+   private String extractFieldNameFromLinkTag(String p_Text)
+   {
+      String name = null;
+      int index = 0;
 
-		return name;
-	}
+      index = p_Text.indexOf('#');
+      name = p_Text.substring(index + 1, p_Text.length());
+
+      return name;
+   }
 }

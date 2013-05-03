@@ -2,7 +2,7 @@ testplan-doclet
 ===============
 
 A doclet to generate a test plan from javadoc.
-
+    
 Maintainer
 ----------
 
@@ -35,9 +35,9 @@ Usage
 				</execution>
 			</executions>
 			<configuration>
-				<doclet>fr.egiov.testplandoclet.HtmlTestPlanDoclet</doclet>
+				<doclet>com.github.testplandoclet.HtmlTestPlanDoclet</doclet>
 				<docletArtifact>
-					<groupId>fr.egiov</groupId>
+					<groupId>com.github</groupId>
 					<artifactId>testplan-doclet</artifactId>
 					<version>0.0.1-SNAPSHOT</version>
 				</docletArtifact>
@@ -49,7 +49,16 @@ Usage
 2. With commandline
 
 		javadoc -doclet fr.egiov.testplandoclet.HtmlTestPlanDoclet -docletpath /path/to/doclet/testplan-doclet-0.0.1-SNAPSHOT-jar-with-dependencies.jar -classpath /path/to/junit/junit-4.10.jar -debug -file target/toto.html -sourcepath src/it/java/ -subpackages fr
-	
+
+Description of the specific options
+-----------------------------------
+
+The options availables for the doclet are 
+ * -application : used to the the application name in the test plan.
+ * -debug       : used to activate the debug logging (logs are present in the file _testplan-doclet.log_)
+ * -file        : used to set the file name of the test plan. This parameter is optional, if it isn't there the doclet generate a file _testplan.html_.
+ * -template    : used to set the Velocity's template to use.
+
 Description of tags
 -------------------
 
