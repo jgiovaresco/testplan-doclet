@@ -11,8 +11,10 @@
  */
 package com.github.testplandoclet.html;
 
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -93,7 +95,7 @@ public class TestPlanHtmlGeneratorImpl implements TestPlanHtmlGenerator
    public void generate(String p_applicationName, TestPlan p_testplan)
    {
       VelocityContext context = null;
-      FileWriter writer = null;
+      Writer writer = null;
 
       context = new VelocityContext();
       context.put("applicatioName", p_applicationName);
@@ -101,7 +103,7 @@ public class TestPlanHtmlGeneratorImpl implements TestPlanHtmlGenerator
 
       try
       {
-         writer = new FileWriter(Configuration.getFileName());
+         writer = new OutputStreamWriter(new FileOutputStream(Configuration.getFileName()), "UTF-8");
          m_template.merge(context, writer);
          writer.flush();
       }

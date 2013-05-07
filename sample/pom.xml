@@ -56,12 +56,12 @@
 				<configuration>
 					<doclet>fr.egiov.testplandoclet.HtmlTestPlanDoclet</doclet>
 					<docletArtifact>
-						<groupId>fr.egiov</groupId>
+						<groupId>com.github</groupId>
 						<artifactId>testplan-doclet</artifactId>
-						<version>0.0.1-SNAPSHOT</version>
+						<version>0.0.2-SNAPSHOT</version>
 					</docletArtifact>
 					<useStandardDocletOptions>false</useStandardDocletOptions>
-					<additionalparam>-debug -file sample_testplan.html</additionalparam>
+					<additionalparam>debug -application Sample -file test-plan.html</additionalparam>
 				</configuration>
 			</plugin>
 		</plugins>
