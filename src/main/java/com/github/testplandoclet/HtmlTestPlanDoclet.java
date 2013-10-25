@@ -17,8 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import com.github.testplandoclet.html.TestPlanHtmlGenerator;
 import com.github.testplandoclet.html.TestPlanHtmlGeneratorImpl;
-import com.github.testplandoclet.plan.Requirement;
-import com.github.testplandoclet.plan.TestCase;
 import com.github.testplandoclet.plan.TestPlan;
 import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.ClassDoc;
